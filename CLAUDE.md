@@ -5,7 +5,8 @@ UI 구성은 네이버 지도 도보 길찾기를 참고하되, 로고·아이�
 
 ## 기술
 - Expo(React Native) + TypeScript, 층 지도는 react-native-svg
-- 실행: `npm start` (Expo Go로 QR 스캔) · 타입 검사: `npm run typecheck`
+- 실행: `npm start` (Expo Go로 QR 스캔) · 웹: `npm run web` (빌드: `npm run build:web` → `dist/`) · 타입 검사: `npm run typecheck`
+- 웹에서는 `react-native-maps` 대신 `src/ui/maps.web.tsx`(OpenStreetMap 임베드)가 쓰인다 (metro.config.cjs)
 - 테스트: `npm test` / 그래프 검사: `node scripts/validate-graph.mjs`
 - 층 데이터를 바꾸면 `npm run data`로 `src/data/generated.ts`를 다시 만든다 (`npm start`가 자동 실행). 데이터가 없으면 앱은 데모 모드
 - 경로 확인: `node scripts/route.ts <출발> <도착>` (방 ID·노드 ID·`geo:위도,경도`)

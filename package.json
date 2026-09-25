@@ -8,6 +8,8 @@
     "start": "npm run data && expo start",
     "android": "npm run data && expo start --android",
     "ios": "npm run data && expo start --ios",
+    "web": "npm run data && expo start --web",
+    "build:web": "npm run data && expo export --platform web",
     "data": "node scripts/build-data.mjs",
     "test": "node --test \"tests/**/*.test.ts\"",
     "typecheck": "tsc --noEmit",
@@ -18,6 +20,7 @@
     "node": ">=22.18"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~57.0.16",
     "@expo/vector-icons": "^15.0.2",
     "expo": "^57.0.25",
     "expo-constants": "~57.0.19",
@@ -31,7 +34,8 @@
     "react-native-maps": "1.27.2",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
-    "react-native-svg": "15.15.4"
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

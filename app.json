@@ -24,6 +24,10 @@
           "locationWhenInUsePermission": "5호관까지 길을 안내하려면 현재 위치가 필요합니다."
         }
       ]
-    ]
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    }
   }
 }
