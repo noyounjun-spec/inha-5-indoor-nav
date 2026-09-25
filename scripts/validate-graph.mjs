@@ -22,7 +22,9 @@ if (files.length === 0) {
   process.exit(0);
 }
 
-const nodes = new Map(); // id -> { f, n, level }
+const nodes = new Map(); // id -> { f, d, n, level }
+// 같은 층 도면을 관별로 나눈 파일끼리는 좌표를 그대로 비교할 수 있다
+const sameFrame = (a, b) => a === b || (a.image && a.image === b.image && a.metersPerUnit === b.metersPerUnit);
 const roomIds = new Set();
 const floors = [];
 
@@ -56,7 +58,7 @@ for (const f of files) {
     if (!Number.isFinite(n.x) || !Number.isFinite(n.y)) err(f, `${n.id}: x, y 좌표가 숫자가 아님`);
     if ((n.type === 'stair' || n.type === 'elevator') && !n.group) err(f, `${n.id}: 계단/엘리베이터 노드는 group 필요`);
     if (n.type === 'entrance' && !n.geo) warn(f, `${n.id}: 입구에 geo(위경도)가 없어 GPS 출발 경로에 쓸 수 없음`);
-    nodes.set(n.id, { f, n, level: n.level ?? d.level });
+    nodes.set(n.id, { f, d, n, level: n.level ?? d.level });
   }
   for (const u of d.unknown) {
     if (typeof u?.what !== 'string') err(f, `unknown 항목에 what(문자열)이 없음: ${JSON.stringify(u)}`);
@@ -95,7 +97,7 @@ for (const [f, d] of floors) {
     const key = [e.from, e.to].sort().join('|');
     if (seenEdges.has(key)) err(f, `edge 중복: ${e.from} - ${e.to}`);
     seenEdges.add(key);
-    if (a.f !== b.f && !(e.lengthM > 0)) err(f, `다른 파일과 잇는 edge는 lengthM 필요: ${e.from} - ${e.to}`);
+    if (!sameFrame(a.d, b.d) && !(e.lengthM > 0)) err(f, `좌표 체계가 다른 파일과 잇는 edge는 lengthM 필요: ${e.from} - ${e.to}`);
     if (e.lengthM !== undefined && !(e.lengthM > 0)) err(f, `lengthM은 0보다 커야 함: ${e.from} - ${e.to}`);
     link(e.from, e.to);
   }

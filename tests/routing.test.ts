@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildGraph, findRoutes, stairTreads, DEFAULT_TREADS_PER_LEVEL } from '../src/routing/index.ts';
+import { buildGraph, findRoutes, stairTreads, DEFAULT_TREADS_PER_LEVEL, type FloorFile } from '../src/routing/index.ts';
 import { loadFloors } from '../scripts/load-floors.ts';
 
 // tests/fixtures/mini 는 가상 데이터다 (실제 5호관 아님)
@@ -46,4 +46,18 @@ test('방에서 방으로, 없는 방은 오류', () => {
   const routes = findRoutes(g, { kind: 'room', id: '5S-1F-101' }, { kind: 'room', id: '5S-2F-202' });
   assert.ok(routes.length >= 1);
   assert.throws(() => findRoutes(g, entrance, { kind: 'room', id: '5S-9F-999' }));
+});
+
+test('같은 층 도면을 나눈 관끼리는 lengthM 없이 좌표로 잇는다', () => {
+  const base = { floor: '2F', level: 2, metersPerUnit: 0.5, image: 'floorplans/2F.png', rooms: [], unknown: [] } as const;
+  const north: FloorFile = {
+    ...base,
+    building: '5N',
+    nodes: [{ id: '5N-2F-N01', type: 'corridor', x: 0, y: 0 }],
+    edges: [{ from: '5N-2F-N01', to: '5S-2F-N01' }],
+  };
+  const south: FloorFile = { ...base, building: '5S', nodes: [{ id: '5S-2F-N01', type: 'corridor', x: 0, y: 40 }], edges: [] };
+  const edge = buildGraph([north, south]).adj.get('5N-2F-N01')![0];
+  assert.equal(edge.meters, 20);
+  assert.throws(() => buildGraph([north, { ...south, image: 'floorplans/3F.png' }]), /lengthM/);
 });

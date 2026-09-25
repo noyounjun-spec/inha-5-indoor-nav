@@ -53,6 +53,11 @@ export function stairTreads(lower: GraphNode, upper: GraphNode): number {
   return lower.treadsToNextUp ?? DEFAULT_TREADS_PER_LEVEL * (upper.level - lower.level);
 }
 
+// 같은 층 도면을 관별로 나눈 파일끼리는 좌표를 그대로 비교할 수 있다
+function sameFrame(a: FloorFile, b: FloorFile): boolean {
+  return a === b || (!!a.image && a.image === b.image && a.metersPerUnit === b.metersPerUnit);
+}
+
 export function buildGraph(files: FloorFile[]): Graph {
   const nodes = new Map<string, GraphNode>();
   const fileOf = new Map<string, FloorFile>();
@@ -80,7 +85,7 @@ export function buildGraph(files: FloorFile[]): Graph {
       if (!a || !b) throw new Error(`없는 노드를 잇는 edge: ${e.from} - ${e.to}`);
       let meters = e.lengthM;
       if (meters === undefined) {
-        if (fileOf.get(e.to) !== file) throw new Error(`다른 파일과 잇는 edge에 lengthM 없음: ${e.from} - ${e.to}`);
+        if (!sameFrame(file, fileOf.get(e.to)!)) throw new Error(`좌표 체계가 다른 파일과 잇는 edge에 lengthM 없음: ${e.from} - ${e.to}`);
         meters = Math.hypot(b.x - a.x, b.y - a.y) * file.metersPerUnit;
       }
       add(makeEdge(e.from, e.to, 'walk', meters));

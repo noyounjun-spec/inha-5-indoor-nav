@@ -24,13 +24,14 @@
 ## 파일: `data/floors/{관}-{층}.json`
 
 파일 하나가 한 관의 한 층이다(예: `5S-2F.json`).
+평면도 원본은 층마다 한 장(`floorplans/2F.png`)이고 네 관이 모두 들어 있다. 같은 층의 관별 파일들은 같은 `image`와 `metersPerUnit`을 쓰므로 **좌표 체계가 같다**.
 
 ```json
 {
   "building": "5S",
   "floor": "2F",
   "level": 2,
-  "image": "floorplans/5S-2F.png",
+  "image": "floorplans/2F.png",
   "metersPerUnit": 0.05,
   "scaleSource": "도면 오른쪽 아래 축척 막대 10m = 200px",
   "nodes": [
@@ -68,7 +69,7 @@
 | `nodes[].geo` | (입구) 위도·경도. GPS로 출발하는 경로에 필요하다 |
 | `rooms[].doors` | 방에 드나드는 노드 목록. 문이 여러 개면 모두 적는다 |
 | `edges[]` | 걸어서 이동할 수 있는 두 노드를 잇는다(양방향). 길이는 좌표로 계산한다 |
-| `edges[].lengthM` | 다른 파일(다른 관이나 층)의 노드와 이을 때는 필수. 좌표 체계가 다르기 때문이다 |
+| `edges[].lengthM` | (선택) 길이를 직접 지정할 때. 다른 파일의 노드와 이을 때 두 파일의 `image`나 `metersPerUnit`이 다르면 필수다 |
 | `unknown[]` | 도면에서 확인할 수 없는 방·복도·연결. **추측해서 노드를 만들지 말고 여기에 적는다** |
 
 ## 수직 연결(계단·엘리베이터)
@@ -89,12 +90,12 @@
 
 ## 관 사이 연결
 
-관과 관을 잇는 복도는 어느 한쪽 파일의 `edges`에 적고 `lengthM`을 반드시 넣는다.
+관과 관을 잇는 복도는 어느 한쪽 파일의 `edges`에 적는다. 같은 층 도면(같은 `image`, 같은 `metersPerUnit`)이면 길이를 좌표로 계산하므로 `lengthM`이 필요 없다.
 
 ## 검사 항목(validate-graph)
 
 - 파일 이름, 관·층 코드, `level`, `metersPerUnit`, 필수 배열
 - ID 형식과 중복, 방 ID와 파일의 관·층이 맞는지
-- edge 양 끝 노드가 있는지, 다른 파일과 잇는 edge에 `lengthM`이 있는지
+- edge 양 끝 노드가 있는지, 좌표 체계가 다른 파일과 잇는 edge에 `lengthM`이 있는지
 - 계단·엘리베이터 group이 한 종류인지, 같은 높이가 두 번 나오지 않는지
 - 모든 방 문이 입구에서 도달 가능한지(입구가 하나 이상 있을 때)

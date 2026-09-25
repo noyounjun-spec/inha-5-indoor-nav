@@ -1,6 +1,6 @@
 ---
 name: floorplan-digitizer
-description: 5호관 평면도 이미지(floorplans/) 한 장을 data/floors/{관}-{층}.json 그래프 데이터로 옮긴다. 층 데이터를 새로 만들거나 도면과 대조해 고칠 때 사용.
+description: 5호관 층 평면도 한 장(floorplans/{층}.png, 네 관 포함)을 관별 data/floors/{관}-{층}.json 그래프 데이터로 옮긴다. 층 데이터를 새로 만들거나 도면과 대조해 고칠 때 사용.
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
@@ -13,8 +13,13 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 - 축척(`metersPerUnit`)은 도면의 축척 막대나 치수로 계산하고, 근거를 `scaleSource`에 적는다. 근거가 없으면 멈추고 보고한다.
 - 5남관 가운데 계단은 반 층 어긋나 있다. 어디와 이어지는지 도면에 분명하지 않으면 `unknown`에 적는다.
 
+## 도면 한 장 → 관별 파일
+- 도면은 층마다 한 장이고 5북·5서·5남·5동이 모두 들어 있다. 이 한 장을 관별 파일(`5N-2F.json`, `5W-2F.json`, …)로 나눈다.
+- 관별 파일은 모두 같은 `image`(`floorplans/2F.png`)와 같은 `metersPerUnit`을 쓰고, 좌표도 같은 이미지 픽셀 기준으로 적는다. 그러면 관 사이 복도 edge에 `lengthM`이 필요 없다.
+- 관 경계는 도면의 표기(관 이름, 호수 체계)로 정한다. 경계가 애매한 복도나 방은 `unknown`에 적고, 보고할 때 어떻게 나눴는지 설명한다.
+
 ## 절차
-1. 도면 이미지를 Read로 연다. 이미지 크기(픽셀)와 방향을 확인한다.
+1. 도면 이미지를 Read로 연다. 이미지 크기(픽셀)와 방향, 관 경계를 확인한다.
 2. 복도 중심선을 따라 `corridor` 노드와 `junction` 노드를 찍는다. 꺾이는 곳과 갈림길마다 노드를 둔다. 좌표는 이미지 픽셀이며 원점은 왼쪽 위다.
 3. 방마다 문 위치에 `door` 노드를 두고, 가장 가까운 복도 노드와 edge로 잇는다.
 4. 계단과 엘리베이터 노드에 `group`을 붙인다. 층 사이 edge는 적지 않는다.

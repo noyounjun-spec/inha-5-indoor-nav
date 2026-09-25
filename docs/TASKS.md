@@ -8,16 +8,17 @@
 - [x] 경로 엔진 핵심(`src/routing/`) + 가상 데이터 테스트
 
 ## 1. 도면 수집 (사용자)
-- [ ] 평면도 이미지를 `floorplans/`에 `{관}-{층}.png` 이름으로 넣기 (floorplans/README.md)
+- [ ] 층 평면도 5장을 `floorplans/`에 `B1.png` `1F.png` `2F.png` `3F.png` `4F.png`로 넣기 (floorplans/README.md)
 - [ ] 관별로 실제 있는 층 목록 확정 → docs/DATA_MODEL.md에 기록
 - [ ] 네이버 지도 참고 스크린샷을 `docs/reference/`에 넣기
 
 ## 2. 층 데이터화 (`/digitize-floor`, floorplan-digitizer 에이전트)
-- [ ] 5남관(5S) 각 층
-- [ ] 5북관(5N) 각 층
-- [ ] 5서관(5W) 각 층
-- [ ] 5동관(5E) 각 층
-- [ ] 관 사이 연결 복도(`lengthM`)
+- [ ] 1F (입구가 있는 층부터)
+- [ ] 2F
+- [ ] 3F
+- [ ] 4F
+- [ ] B1
+- [ ] 관 사이 연결 복도 확인
 - [ ] 5남관 가운데 계단의 반 층 구조를 확인하고 DATA_MODEL.md 표 채우기
 - [ ] 입구 위경도(`geo`) 입력
 

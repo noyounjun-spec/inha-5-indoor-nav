@@ -18,11 +18,11 @@ UI 구성은 네이버 지도 도보 길찾기를 참고하되, 로고·아이�
 - 한 단계를 끝내면 docs/TASKS.md에 체크하고 git commit
 
 ## 폴더
-- `floorplans/` 평면도 원본 · `data/floors/` 층 그래프(json) · `tests/fixtures/` 테스트용 가상 데이터(실제 도면 아님)
+- `floorplans/` 평면도 원본(층마다 1장: B1·1F·2F·3F·4F.png) · `data/floors/` 층 그래프(json, 관별로 나눔) · `tests/fixtures/` 테스트용 가상 데이터(실제 도면 아님)
 - `src/routing/` 경로 엔진(걸음·시간 계산은 여기서만) · `scripts/` 검사기와 CLI
 
 ## Claude 도구 (.claude/)
-- 스킬: `/next-task` 다음 작업 진행 · `/digitize-floor 5S-2F` 도면 데이터화 · `/check-route` 경로 확인
+- 스킬: `/next-task` 다음 작업 진행 · `/digitize-floor 2F` 도면 데이터화 · `/check-route` 경로 확인
 - 에이전트: `floorplan-digitizer` 도면→json · `route-auditor` 데이터·경로 검수 · `ui-reviewer` 화면 검수
 - 훅: data/floors/*.json을 고치면 validate-graph가 자동 실행된다
 
