@@ -1,5 +1,6 @@
 // 색 토큰. 값의 기준은 docs/UI_GUIDE.md "색" 표. 화면 코드에 색 값을 직접 쓰지 않는다.
-import { useColorScheme } from 'react-native';
+// CSS에서는 같은 토큰을 --primary 같은 CSS 변수로 쓴다 (applyThemeVars가 넣어 준다).
+import { useSyncExternalStore } from 'react';
 
 const light = {
   primary: '#3563E9',
@@ -36,10 +37,29 @@ const dark: typeof light = {
 
 export type Theme = typeof light;
 
+const query = typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+const subscribe = (l: () => void) => {
+  query?.addEventListener('change', l);
+  return () => query?.removeEventListener('change', l);
+};
+const isDark = () => !!query?.matches;
+
 export function useTheme(): Theme {
-  return useColorScheme() === 'dark' ? dark : light;
+  return useSyncExternalStore(subscribe, isDark) ? dark : light;
 }
 
+/** 토큰을 CSS 변수로 넣는다 (camelCase → --kebab-case). 시스템 다크 모드가 바뀌면 다시 넣는다. */
+export function applyThemeVars() {
+  const apply = () => {
+    const t = isDark() ? dark : light;
+    const root = document.documentElement.style;
+    for (const [k, v] of Object.entries(t)) root.setProperty(`--${k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}`, v);
+  };
+  apply();
+  subscribe(apply);
+}
+
+/** 글자 크기(px) */
 export const fontSize = { time: 22, title: 17, body: 15, small: 13, tiny: 11 };
 
 /** 최소 터치 영역 (docs/UI_GUIDE.md 접근성) */

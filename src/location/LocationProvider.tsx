@@ -1,6 +1,6 @@
-// 현재 GPS 위치 (docs/LOCATION.md "실외 모드"). 실내 추정(걸음·기압)은 6단계에서 붙인다.
+// 현재 GPS 위치 (docs/LOCATION.md "실외 모드"). 브라우저 Geolocation API를 쓴다.
+// 브라우저에서는 걸음·기압 센서를 쓸 수 없어서 실내 진행은 내비 화면의 버튼으로 한다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import * as Location from 'expo-location';
 import type { Geo } from '../routing/index.ts';
 
 type Status = 'loading' | 'granted' | 'denied' | 'unavailable';
@@ -17,21 +17,20 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>('loading');
   const [coords, setCoords] = useState<Geo | null>(null);
 
-  const refresh = useCallback(async () => {
-    try {
-      const { granted } = await Location.requestForegroundPermissionsAsync();
-      if (!granted) {
-        setStatus('denied');
-        return;
-      }
-      setStatus('granted');
-      const last = await Location.getLastKnownPositionAsync();
-      if (last) setCoords({ lat: last.coords.latitude, lng: last.coords.longitude });
-      const cur = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-      setCoords({ lat: cur.coords.latitude, lng: cur.coords.longitude });
-    } catch {
+  const refresh = useCallback(() => {
+    // Geolocation은 HTTPS(또는 localhost)에서만 동작한다
+    if (!('geolocation' in navigator) || !window.isSecureContext) {
       setStatus('unavailable');
+      return;
     }
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        setStatus('granted');
+        setCoords({ lat: p.coords.latitude, lng: p.coords.longitude });
+      },
+      (e) => setStatus(e.code === e.PERMISSION_DENIED ? 'denied' : 'unavailable'),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 },
+    );
   }, []);
 
   useEffect(() => {

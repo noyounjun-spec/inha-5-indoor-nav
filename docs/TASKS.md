@@ -28,6 +28,7 @@
 
 ## 4. 앱 기본
 - [x] Expo(TypeScript) 앱 초기화, 기존 `src/routing` 연결, `npm test` 유지
+- [x] 웹 앱으로 전환 (Vite + React, Leaflet 실외 지도, react-router)
 - [x] 층 데이터 묶음 생성 스크립트(`scripts/build-data.mjs` → `src/data/generated.ts`)
 - [x] 방 검색(호수·관·이름·별칭)
 - [x] 데이터가 없을 때 데모 모드(가상 데이터 + 화면에 데모 표시)
@@ -39,18 +40,18 @@
 - [x] S4 경로 상세 (경로선 + 단계별 안내)
 - [x] S5 내비 (평면도 2D, 층 선택, 배너, 단계별 층 자동 전환)
 - [x] S6 도착
-- [ ] 실제 기기(Expo Go)에서 화면 확인 (사용자)
-- [ ] 평면도 두 손가락 확대·이동 (react-native-gesture-handler)
+- [ ] 휴대폰 브라우저에서 화면 확인 (사용자)
+- [ ] 평면도 두 손가락 확대·이동 (포인터 이벤트)
 - [ ] 실제 도면 이미지 위에 경로선이 맞게 그려지는지 확인 (층 데이터화 후)
-- [ ] Android 배포 빌드용 Google Maps API 키 (Expo Go에서는 필요 없음)
+- [ ] HTTPS 정적 호스팅에 배포 (GitHub Pages·Netlify 등, `npm run build` 결과 `dist/`)
 
 ## 6. 위치 (docs/LOCATION.md)
 - [ ] GPS 출발지 자동 입력
 - [ ] 입구 도착 시 실내 모드 전환
-- [ ] 보행계로 경로 진행
-- [ ] 기압계로 층 자동 전환 + 수동 확인 대체
+- [ ] 단계 수동 진행 다듬기 ("3F에 도착했나요?" 확인 버튼)
+- [ ] (선택) DeviceMotion 가속도로 걸음 추정해 경로 진행
 - [ ] 경로 이탈 감지와 다시 탐색
 
 ## 7. 현장 테스트·보정
 - [ ] 계단 칸 수, 층 높이, 보폭 실제 측정 → ROUTING.md·LOCATION.md 갱신
-- [ ] 실제 기기(Android/iOS)에서 처음부터 끝까지 안내 테스트
+- [ ] 휴대폰 브라우저(Android Chrome·iOS Safari)에서 처음부터 끝까지 안내 테스트

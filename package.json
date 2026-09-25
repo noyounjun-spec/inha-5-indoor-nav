@@ -3,13 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "expo-router/entry",
   "scripts": {
-    "start": "npm run data && expo start",
-    "android": "npm run data && expo start --android",
-    "ios": "npm run data && expo start --ios",
-    "web": "npm run data && expo start --web",
-    "build:web": "npm run data && expo export --platform web",
+    "dev": "npm run data && vite",
+    "start": "npm run dev",
+    "build": "npm run data && tsc --noEmit && vite build",
+    "preview": "vite preview",
     "data": "node scripts/build-data.mjs",
     "test": "node --test \"tests/**/*.test.ts\"",
     "typecheck": "tsc --noEmit",
@@ -20,26 +18,20 @@
     "node": ">=22.18"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~57.0.16",
-    "@expo/vector-icons": "^15.0.2",
-    "expo": "^57.0.25",
-    "expo-constants": "~57.0.19",
-    "expo-linking": "~57.0.11",
-    "expo-location": "~57.0.20",
-    "expo-router": "~57.0.23",
-    "expo-status-bar": "~57.0.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-native": "0.86.3",
-    "react-native-maps": "1.27.2",
-    "react-native-safe-area-context": "~5.7.0",
-    "react-native-screens": "~4.26.0",
-    "react-native-svg": "15.15.4",
-    "react-native-web": "^0.21.2"
+    "@mdi/js": "^7.4.47",
+    "leaflet": "^1.9.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-leaflet": "^5.0.0",
+    "react-router": "^8.4.0"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^26.6.2",
-    "@types/react": "~19.2.4",
-    "typescript": "~6.0.3"
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.1"
   }
 }

@@ -1,11 +1,17 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "strict": true,
+    "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "types": ["node"]
+    "isolatedModules": true,
+    "types": ["node", "vite/client"]
   },
-  "include": ["app", "src", "scripts", "tests", "expo-env.d.ts", ".expo/types/**/*.ts"]
+  "include": ["src", "scripts", "tests", "vite.config.ts"]
 }

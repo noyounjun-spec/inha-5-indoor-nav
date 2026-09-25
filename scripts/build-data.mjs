@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // data/floors/*.json 을 앱에서 쓸 수 있게 src/data/generated.ts 로 묶는다.
-// 사용법: node scripts/build-data.mjs   (npm start 가 먼저 실행한다)
+// 사용법: node scripts/build-data.mjs   (npm run dev·build 가 먼저 실행한다)
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 const dir = 'data/floors';
@@ -34,12 +34,12 @@ const text = [
   '',
   'export const planImages: Record<string, PlanImage> = {',
   ...[...images].map(
-    ([p, { width, height }]) => `  ${JSON.stringify(p)}: { source: require('../../${p}'), width: ${width}, height: ${height} },`,
+    ([p, { width, height }]) => `  ${JSON.stringify(p)}: { source: new URL('../../${p}', import.meta.url).href, width: ${width}, height: ${height} },`,
   ),
   '};',
   '',
 ].join('\n');
 
-// 내용이 같으면 다시 쓰지 않는다 (Metro 불필요한 새로고침 방지)
+// 내용이 같으면 다시 쓰지 않는다 (Vite 불필요한 새로고침 방지)
 if (!existsSync(out) || readFileSync(out, 'utf8') !== text) writeFileSync(out, text);
 console.log(`층 파일 ${floors.length}개 · 도면 이미지 ${images.size}개 → ${out}${floors.length ? '' : ' (데이터 없음: 앱은 데모 모드로 실행)'}`);

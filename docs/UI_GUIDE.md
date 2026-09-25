@@ -47,13 +47,13 @@
 | `outdoor` | `#9CA3AF` / 다크 `#6B7280` | 층 이동 막대의 실외 구간 |
 | `demoBg` / `demoText` | `#FFF4E5` / `#8A4B00` | 데모 데이터 표시 |
 
-색 값은 `src/ui/theme.ts`에만 적고, 화면 코드는 토큰만 쓴다.
+색 값은 `src/ui/theme.ts`에만 적고, 화면 코드는 토큰만 쓴다. CSS에서는 같은 토큰을 `var(--primary)`처럼 CSS 변수로 쓴다(`applyThemeVars`가 넣어 준다).
 
 ## 글자와 아이콘
 - 시스템 기본 폰트를 쓴다. 시간은 22pt 굵게, 본문은 15pt, 보조 정보는 13pt다.
-- 아이콘은 `@expo/vector-icons`(MaterialCommunityIcons)의 일반 아이콘만 쓴다.
+- 아이콘은 `@mdi/js`(Material Design Icons, MaterialCommunityIcons와 같은 모음)의 일반 아이콘만 쓴다. 쓰는 아이콘은 `src/ui/common.tsx`의 `ICONS`에 등록한다.
 
-## 평면도 그리기(react-native-svg)
+## 평면도 그리기(SVG)
 - 도면 이미지를 바탕에 깔고 경로선을 겹친다. 이미지가 없으면 노드와 edge를 선으로 그린다.
 - 두 손가락으로 확대하거나 옮길 수 있다. 안내 중에는 내 위치를 따라가고, 사용자가 화면을 움직이면 "현재 위치로" 버튼을 보여 준다.
 - 경로선은 두께 6, 끝을 둥글게 한다. 현재 층 구간은 `primary`, 다른 층 구간은 그리지 않는다.

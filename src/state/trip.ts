@@ -1,4 +1,5 @@
 // 출발지·도착지, 계산한 경로, 최근 검색을 화면끼리 나눠 쓰는 작은 저장소
+// 최근 검색만 브라우저(localStorage)에 남긴다. 저장소를 못 쓰면 메모리에만 둔다.
 import { useSyncExternalStore } from 'react';
 import type { Geo, Route } from '../routing/index.ts';
 import { ME } from '../lib/places.ts';
@@ -14,7 +15,18 @@ export interface TripState {
   recent: string[];
 }
 
-let state: TripState = { from: ME, to: null, routes: [], selected: 0, startGeo: null, recent: [] };
+const RECENT_KEY = 'inha5nav.recent';
+
+function loadRecent(): string[] {
+  try {
+    const v: unknown = JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]');
+    return Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+let state: TripState = { from: ME, to: null, routes: [], selected: 0, startGeo: null, recent: loadRecent() };
 const listeners = new Set<() => void>();
 
 export function setTrip(patch: Partial<TripState>) {
@@ -23,7 +35,13 @@ export function setTrip(patch: Partial<TripState>) {
 }
 
 export function addRecent(id: string) {
-  setTrip({ recent: [id, ...state.recent.filter((r) => r !== id)].slice(0, 8) });
+  const recent = [id, ...state.recent.filter((r) => r !== id)].slice(0, 8);
+  setTrip({ recent });
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+  } catch {
+    // 저장 못 해도 이번 방문 동안은 메모리에 남는다
+  }
 }
 
 const subscribe = (l: () => void) => {

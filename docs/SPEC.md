@@ -39,4 +39,4 @@
 - Wi‑Fi나 비콘 기반 실내 측위(나중에 LOCATION.md에 추가할 수 있다)
 
 ## 정해야 할 것
-- 실외 지도 SDK: `react-native-maps`(기본값, Expo Go에서 실행 가능) 또는 네이버 지도 SDK(개발 빌드와 API 키 필요). 바꾸려면 사용자에게 먼저 확인한다.
+- 실외 지도: Leaflet + OpenStreetMap 타일(기본값, API 키 필요 없음) 또는 네이버 지도 웹 API(API 키 필요). 바꾸려면 사용자에게 먼저 확인한다.

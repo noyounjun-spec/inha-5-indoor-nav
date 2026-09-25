@@ -1,8 +1,5 @@
 node_modules/
-.expo/
 dist/
-web-build/
 *.log
 .DS_Store
 .claude/settings.local.json
-expo-env.d.ts

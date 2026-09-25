@@ -1,7 +1,5 @@
-// 층 평면도 2D (react-native-svg). 도면 이미지가 있으면 바탕에 깔고, 없으면 복도 그래프를 선으로 그린다.
-import { useState } from 'react';
-import { StyleSheet, View, type LayoutChangeEvent } from 'react-native';
-import Svg, { Circle, G, Image as SvgImage, Line, Polyline, Text as SvgText } from 'react-native-svg';
+// 층 평면도 2D (SVG). 도면 이미지가 있으면 바탕에 깔고, 없으면 복도 그래프를 선으로 그린다.
+import { useEffect, useRef, useState } from 'react';
 import type { FloorCode, Route } from '../routing/index.ts';
 import { floorFiles, graph, planImageFor } from '../data/index.ts';
 import { useTheme } from './theme.ts';
@@ -19,7 +17,16 @@ const isWalk = (type: string) => type === 'straight' || type === 'left' || type 
 
 export function FloorPlan({ floor, route, activeStep, meNodeId }: Props) {
   const t = useTheme();
+  const ref = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setSize({ w: el.clientWidth, h: el.clientHeight }));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const files = floorFiles(floor);
   const plan = planImageFor(floor);
   const nodes = files.flatMap((f) => f.nodes);
@@ -35,7 +42,7 @@ export function FloorPlan({ floor, route, activeStep, meNodeId }: Props) {
     const pad = Math.max(maxX - minX, maxY - minY, 1) * 0.12;
     box = { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 };
   }
-  // 화면 1pt에 해당하는 도면 단위 (선 굵기·글자 크기를 화면 기준으로 맞춘다)
+  // 화면 1px에 해당하는 도면 단위 (선 굵기·글자 크기를 화면 기준으로 맞춘다)
   const scale = size.w && size.h ? Math.min(size.w / box.w, size.h / box.h) : 1;
   const u = 1 / scale;
 
@@ -64,14 +71,14 @@ export function FloorPlan({ floor, route, activeStep, meNodeId }: Props) {
     : files.flatMap((f) => f.edges).filter((e) => onFloor(e.from) && onFloor(e.to));
 
   return (
-    <View style={[StyleSheet.absoluteFill, { backgroundColor: t.floorBg }]} onLayout={(e: LayoutChangeEvent) => setSize({ w: e.nativeEvent.layout.width, h: e.nativeEvent.layout.height })}>
-      <Svg width="100%" height="100%" viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`} preserveAspectRatio="xMidYMid meet">
-        {plan && <SvgImage href={plan.source} x={0} y={0} width={plan.width} height={plan.height} />}
+    <div ref={ref} className="floor-plan" role="img" aria-label={`${floor} 평면도`}>
+      <svg viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`} preserveAspectRatio="xMidYMid meet">
+        {plan && <image href={plan.source} x={0} y={0} width={plan.width} height={plan.height} />}
 
         {corridorEdges.map((e) => {
           const a = graph.nodes.get(e.from)!;
           const b = graph.nodes.get(e.to)!;
-          return <Line key={`${e.from}-${e.to}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={t.wall} strokeWidth={14 * u} strokeLinecap="round" />;
+          return <line key={`${e.from}-${e.to}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={t.wall} strokeWidth={14 * u} strokeLinecap="round" />;
         })}
 
         {!plan &&
@@ -80,14 +87,14 @@ export function FloorPlan({ floor, route, activeStep, meNodeId }: Props) {
             .map((r) => {
               const d = graph.nodes.get(r.doors[0]);
               return d ? (
-                <SvgText key={r.id} x={d.x} y={d.y - 14 * u} fontSize={11 * u} fill={t.subtext} textAnchor="middle">
+                <text key={r.id} x={d.x} y={d.y - 14 * u} fontSize={11 * u} fill={t.subtext} textAnchor="middle">
                   {r.name}
-                </SvgText>
+                </text>
               ) : null;
             })}
 
         {segments.map((s, i) => (
-          <Polyline
+          <polyline
             key={i}
             points={pts(s.ids)}
             fill="none"
@@ -101,40 +108,40 @@ export function FloorPlan({ floor, route, activeStep, meNodeId }: Props) {
         {[...verticalNodes].map((id) => {
           const n = graph.nodes.get(id)!;
           return (
-            <G key={id}>
-              <Circle cx={n.x} cy={n.y} r={9 * u} fill={t.accent} stroke={t.surface} strokeWidth={2 * u} />
-              <SvgText x={n.x} y={n.y + 3.5 * u} fontSize={10 * u} fontWeight="bold" fill={t.onPrimary} textAnchor="middle">
+            <g key={id}>
+              <circle cx={n.x} cy={n.y} r={9 * u} fill={t.accent} stroke={t.surface} strokeWidth={2 * u} />
+              <text x={n.x} y={n.y + 3.5 * u} fontSize={10 * u} fontWeight="bold" fill={t.onPrimary} textAnchor="middle">
                 {n.type === 'elevator' ? 'E' : '계'}
-              </SvgText>
-            </G>
+              </text>
+            </g>
           );
         })}
 
         {startId && onFloor(startId) && (() => {
           const n = graph.nodes.get(startId)!;
-          return <Circle cx={n.x} cy={n.y} r={7 * u} fill={t.start} stroke={t.surface} strokeWidth={2 * u} />;
+          return <circle cx={n.x} cy={n.y} r={7 * u} fill={t.start} stroke={t.surface} strokeWidth={2 * u} />;
         })()}
 
         {endId && onFloor(endId) && (() => {
           const n = graph.nodes.get(endId)!;
           return (
-            <G>
-              <Line x1={n.x} y1={n.y} x2={n.x} y2={n.y - 18 * u} stroke={t.end} strokeWidth={3 * u} />
-              <Circle cx={n.x} cy={n.y - 22 * u} r={8 * u} fill={t.end} stroke={t.surface} strokeWidth={2 * u} />
-            </G>
+            <g>
+              <line x1={n.x} y1={n.y} x2={n.x} y2={n.y - 18 * u} stroke={t.end} strokeWidth={3 * u} />
+              <circle cx={n.x} cy={n.y - 22 * u} r={8 * u} fill={t.end} stroke={t.surface} strokeWidth={2 * u} />
+            </g>
           );
         })()}
 
         {meNodeId && onFloor(meNodeId) && (() => {
           const n = graph.nodes.get(meNodeId)!;
           return (
-            <G>
-              <Circle cx={n.x} cy={n.y} r={16 * u} fill={t.primary} opacity={0.18} />
-              <Circle cx={n.x} cy={n.y} r={8 * u} fill={t.primary} stroke={t.surface} strokeWidth={3 * u} />
-            </G>
+            <g>
+              <circle cx={n.x} cy={n.y} r={16 * u} fill={t.primary} opacity={0.18} />
+              <circle cx={n.x} cy={n.y} r={8 * u} fill={t.primary} stroke={t.surface} strokeWidth={3 * u} />
+            </g>
           );
         })()}
-      </Svg>
-    </View>
+      </svg>
+    </div>
   );
 }
