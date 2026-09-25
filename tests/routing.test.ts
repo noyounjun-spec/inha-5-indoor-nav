@@ -49,7 +49,7 @@ test('방에서 방으로, 없는 방은 오류', () => {
 });
 
 test('같은 층 도면을 나눈 관끼리는 lengthM 없이 좌표로 잇는다', () => {
-  const base = { floor: '2F', level: 2, metersPerUnit: 0.5, image: 'floorplans/2F.png', rooms: [], unknown: [] } as const;
+  const base = { floor: '2F' as const, level: 2, metersPerUnit: 0.5, image: 'floorplans/2F.png', rooms: [], unknown: [] };
   const north: FloorFile = {
     ...base,
     building: '5N',

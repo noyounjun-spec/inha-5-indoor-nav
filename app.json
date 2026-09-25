@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "5호관 길찾기",
+    "slug": "inha-5-indoor-nav",
+    "scheme": "inha5nav",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSMotionUsageDescription": "걸음 수로 실내 위치를 추정하는 데 사용합니다."
+      }
+    },
+    "android": {
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACTIVITY_RECOGNITION"]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "5호관까지 길을 안내하려면 현재 위치가 필요합니다."
+        }
+      ]
+    ]
+  }
+}

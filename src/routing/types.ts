@@ -17,6 +17,7 @@ export interface FloorNode {
   group?: string;
   treadsToNextUp?: number;
   geo?: Geo;
+  name?: string;
 }
 
 export interface Room {

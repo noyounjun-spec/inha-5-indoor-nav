@@ -27,17 +27,22 @@
 - [ ] 연결이 끊긴 곳이나 이상한 우회가 있으면 데이터 수정
 
 ## 4. 앱 기본
-- [ ] Expo(TypeScript) 앱 초기화, 기존 `src/routing` 연결, `npm test` 유지
-- [ ] 층 데이터 묶음 생성 스크립트(`data/floors/*.json` → 앱용 index)
-- [ ] 방 검색(호수·관·이름·별칭)
+- [x] Expo(TypeScript) 앱 초기화, 기존 `src/routing` 연결, `npm test` 유지
+- [x] 층 데이터 묶음 생성 스크립트(`scripts/build-data.mjs` → `src/data/generated.ts`)
+- [x] 방 검색(호수·관·이름·별칭)
+- [x] 데이터가 없을 때 데모 모드(가상 데이터 + 화면에 데모 표시)
 
 ## 5. 화면 (docs/UI_GUIDE.md, ui-reviewer 에이전트)
-- [ ] S1 홈 (실외 지도 + 검색창)
-- [ ] S2 검색
-- [ ] S3 경로 목록 (카드 여러 장)
-- [ ] S4 경로 상세 (경로선 + 단계별 안내)
-- [ ] S5 내비 (평면도 2D, 층 선택, 배너)
-- [ ] S6 도착
+- [x] S1 홈 (실외 지도 + 검색창)
+- [x] S2 검색
+- [x] S3 경로 목록 (카드 여러 장)
+- [x] S4 경로 상세 (경로선 + 단계별 안내)
+- [x] S5 내비 (평면도 2D, 층 선택, 배너, 단계별 층 자동 전환)
+- [x] S6 도착
+- [ ] 실제 기기(Expo Go)에서 화면 확인 (사용자)
+- [ ] 평면도 두 손가락 확대·이동 (react-native-gesture-handler)
+- [ ] 실제 도면 이미지 위에 경로선이 맞게 그려지는지 확인 (층 데이터화 후)
+- [ ] Android 배포 빌드용 Google Maps API 키 (Expo Go에서는 필요 없음)
 
 ## 6. 위치 (docs/LOCATION.md)
 - [ ] GPS 출발지 자동 입력

@@ -4,7 +4,12 @@ import { makeEdge, type Graph, type GraphEdge } from './graph.ts';
 import { OUTDOOR_DETOUR_FACTOR } from './constants.ts';
 import { buildInstructions, type Instruction } from './instructions.ts';
 
-export type Place = { kind: 'room'; id: string } | { kind: 'node'; id: string } | { kind: 'geo'; geo: Geo };
+// entrances: 아무 입구에서나 출발 (GPS가 없거나 5호관에서 너무 멀 때)
+export type Place =
+  | { kind: 'room'; id: string }
+  | { kind: 'node'; id: string }
+  | { kind: 'geo'; geo: Geo }
+  | { kind: 'entrances' };
 
 export type ProfileId = 'min-steps' | 'fastest' | 'stairs-only' | 'no-stairs';
 
@@ -53,7 +58,16 @@ function startEdges(g: Graph, from: Place): GraphEdge[] {
         out.push(makeEdge(START_ID, n.id, 'outdoor', haversineM(from.geo, n.geo) * OUTDOOR_DETOUR_FACTOR));
     return out;
   }
+  if (from.kind === 'entrances') {
+    return [...g.nodes.values()].filter((n) => n.type === 'entrance').map((n) => makeEdge(START_ID, n.id, 'walk', 0));
+  }
   return placeNodes(g, from).map((id) => makeEdge(START_ID, id, 'walk', 0));
+}
+
+function placeName(g: Graph, p: Place): string {
+  if (p.kind === 'room') return g.rooms.get(p.id)!.name;
+  if (p.kind === 'node') return g.nodes.get(p.id)!.name ?? p.id;
+  return '';
 }
 
 function placeNodes(g: Graph, p: Place): string[] {
@@ -66,7 +80,7 @@ function placeNodes(g: Graph, p: Place): string[] {
     if (!g.nodes.has(p.id)) throw new Error(`없는 노드: ${p.id}`);
     return [p.id];
   }
-  throw new Error('GPS 위치는 도착지로 쓸 수 없음');
+  throw new Error('GPS 위치나 입구 전체는 도착지로 쓸 수 없음');
 }
 
 function shortestPath(g: Graph, start: GraphEdge[], targets: Set<string>, profile: Profile): GraphEdge[] | null {
@@ -96,6 +110,7 @@ function shortestPath(g: Graph, start: GraphEdge[], targets: Set<string>, profil
 }
 
 export function findRoutes(g: Graph, from: Place, to: Place): Route[] {
+  if (to.kind === 'geo' || to.kind === 'entrances') throw new Error('GPS 위치나 입구 전체는 도착지로 쓸 수 없음');
   const start = startEdges(g, from);
   const targets = new Set(placeNodes(g, to));
   const routes: Route[] = [];
@@ -119,7 +134,7 @@ export function findRoutes(g: Graph, from: Place, to: Place): Route[] {
       steps: Math.round(real.reduce((s, e) => s + e.steps, 0)),
       seconds: Math.round(real.reduce((s, e) => s + e.seconds, 0)),
       meters: Math.round(real.reduce((s, e) => s + e.meters, 0)),
-      instructions: buildInstructions(g, real, to.kind === 'room' ? g.rooms.get(to.id)!.name : to.id),
+      instructions: buildInstructions(g, real, placeName(g, to), nodeIds[nodeIds.length - 1]),
     });
   }
   return routes;

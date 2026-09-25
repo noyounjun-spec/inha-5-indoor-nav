@@ -1,14 +1,11 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
     "noEmit": true,
-    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["src", "scripts", "tests"]
+  "include": ["app", "src", "scripts", "tests", "expo-env.d.ts", ".expo/types/**/*.ts"]
 }
