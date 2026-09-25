@@ -1,0 +1,14 @@
+{
+  "name": "inha-5-indoor-nav",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "validate": "node scripts/validate-graph.mjs",
+    "route": "node scripts/route.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}

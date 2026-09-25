@@ -1,0 +1,25 @@
+{
+  "_comment": "테스트용 가상 데이터. 실제 5호관 도면이 아니다.",
+  "building": "5S",
+  "floor": "1F",
+  "level": 1,
+  "metersPerUnit": 1,
+  "scaleSource": "테스트용: 1단위 = 1m",
+  "nodes": [
+    { "id": "5S-1F-N01", "type": "entrance", "x": 0, "y": 0, "geo": { "lat": 37.45, "lng": 126.657 } },
+    { "id": "5S-1F-N02", "type": "junction", "x": 10, "y": 0 },
+    { "id": "5S-1F-N03", "type": "junction", "x": 30, "y": 0 },
+    { "id": "5S-1F-N04", "type": "stair", "x": 30, "y": 5, "group": "5S-ST-T", "treadsToNextUp": 20 },
+    { "id": "5S-1F-N05", "type": "elevator", "x": 0, "y": 5, "group": "5S-EV-T" },
+    { "id": "5S-1F-N06", "type": "door", "x": 10, "y": 3 }
+  ],
+  "rooms": [{ "id": "5S-1F-101", "name": "101호", "doors": ["5S-1F-N06"] }],
+  "edges": [
+    { "from": "5S-1F-N01", "to": "5S-1F-N02" },
+    { "from": "5S-1F-N02", "to": "5S-1F-N03" },
+    { "from": "5S-1F-N03", "to": "5S-1F-N04" },
+    { "from": "5S-1F-N01", "to": "5S-1F-N05" },
+    { "from": "5S-1F-N02", "to": "5S-1F-N06" }
+  ],
+  "unknown": []
+}
