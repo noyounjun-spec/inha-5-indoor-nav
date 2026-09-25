@@ -7,7 +7,7 @@ description: 5호관 층 평면도 한 장(floorplans/{층}.png, 네 관이 모�
 
 인자: 층 코드(`B1`, `1F`, `2F`, `3F`, `4F`). 없으면 `floorplans/`에서 아직 데이터화하지 않은 층을 찾아 보여 주고 고르게 한다.
 
-1. `floorplans/{층}.*`가 있는지 확인한다. 없으면 멈추고 사용자에게 도면을 요청한다.
+1. `floorplans/{층}.*`가 있는지 확인한다(B1은 `floorplans/B1F.png`). 없으면 멈추고 사용자에게 도면을 요청한다.
 2. **floorplan-digitizer** 에이전트에 맡긴다. 전달할 것:
    - 도면 경로와 층 코드
    - 만들 파일: `data/floors/{5N,5W,5S,5E}-{층}.json` (그 층에 실제로 있는 관만)

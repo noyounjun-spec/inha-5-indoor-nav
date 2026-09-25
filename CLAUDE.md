@@ -18,7 +18,7 @@ UI 구성은 네이버 지도 도보 길찾기를 참고하되, 로고·아이�
 - 한 단계를 끝내면 docs/TASKS.md에 체크하고 git commit
 
 ## 폴더
-- `floorplans/` 평면도 원본(층마다 1장: B1·1F·2F·3F·4F.png) · `data/floors/` 층 그래프(json, 관별로 나눔) · `tests/fixtures/` 테스트용 가상 데이터(실제 도면 아님)
+- `floorplans/` 평면도 원본(층마다 1장: B1F·1F·2F·3F·4F.png) · `data/floors/` 층 그래프(json, 관별로 나눔) · `tests/fixtures/` 테스트용 가상 데이터(실제 도면 아님)
 - `src/routing/` 경로 엔진(걸음·시간 계산은 여기서만) · `scripts/` 검사기와 CLI
 
 ## Claude 도구 (.claude/)

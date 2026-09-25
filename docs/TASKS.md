@@ -8,7 +8,7 @@
 - [x] 경로 엔진 핵심(`src/routing/`) + 가상 데이터 테스트
 
 ## 1. 도면 수집 (사용자)
-- [ ] 층 평면도 5장을 `floorplans/`에 `B1.png` `1F.png` `2F.png` `3F.png` `4F.png`로 넣기 (floorplans/README.md)
+- [x] 층 평면도 5장을 `floorplans/`에 `B1F.png` `1F.png` `2F.png` `3F.png` `4F.png`로 넣기 (floorplans/README.md)
 - [ ] 관별로 실제 있는 층 목록 확정 → docs/DATA_MODEL.md에 기록
 - [ ] 네이버 지도 참고 스크린샷을 `docs/reference/`에 넣기
 
