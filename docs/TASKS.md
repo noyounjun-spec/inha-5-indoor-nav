@@ -9,15 +9,18 @@
 
 ## 1. 도면 수집 (사용자)
 - [x] 층 평면도 5장을 `floorplans/`에 `B1F.png` `1F.png` `2F.png` `3F.png` `4F.png`로 넣기 (floorplans/README.md)
-- [ ] 관별로 실제 있는 층 목록 확정 → docs/DATA_MODEL.md에 기록
+- [x] 관별로 실제 있는 층 목록 확정 → docs/DATA_MODEL.md에 기록 (도면 기준, 현장 확인 전)
 - [ ] 네이버 지도 참고 스크린샷을 `docs/reference/`에 넣기
 
 ## 2. 층 데이터화 (`/digitize-floor`, floorplan-digitizer 에이전트)
-- [ ] 1F (입구가 있는 층부터)
-- [ ] 2F
-- [ ] 3F
-- [ ] 4F
-- [ ] B1
+- [x] 1F (입구가 있는 층부터)
+- [x] 2F
+- [x] 3F
+- [x] 4F
+- [x] B1 (계단·EV가 1F와 짝지어지지 않아 지하 출구로만 들어감)
+- [x] 층 사이 계단·엘리베이터 group 이름 맞추기 (같은 칸 줄로 분명한 것만)
+- [ ] 축척 실측 (지금은 임시값: 복도 폭 2.7m 가정, 1F~4F 0.06, B1 0.045 m/px)
+- [ ] 각 파일 unknown 목록 현장 확인 (모두 136개)
 - [ ] 관 사이 연결 복도 확인
 - [ ] 5남관 가운데 계단의 반 층 구조를 확인하고 DATA_MODEL.md 표 채우기
 - [ ] 입구 위경도(`geo`) 입력
