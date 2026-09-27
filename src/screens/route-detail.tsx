@@ -10,7 +10,7 @@ import { Chip, DemoBanner, FloatingButton, PrimaryButton } from '../ui/common.ts
 import { FloorPlan } from '../ui/FloorPlan.tsx';
 import { FloorDivider, InstructionRow } from '../ui/InstructionRow.tsx';
 import { OutdoorMap } from '../ui/OutdoorMap.tsx';
-import { FloorBar, RouteSummaryLine } from '../ui/RouteCard.tsx';
+import { FloorBar, RouteSummaryLine, VerticalBadge } from '../ui/RouteCard.tsx';
 
 type View = 'outdoor' | FloorCode;
 
@@ -60,6 +60,8 @@ export default function RouteDetail() {
           <div className="sheet-header">
             <div className="line1">
               <RouteSummaryLine route={route} />
+              <span style={{ flex: 1 }} />
+              <VerticalBadge route={route} />
             </div>
             <div className="chips">
               {route.labels.map((l, i) => (

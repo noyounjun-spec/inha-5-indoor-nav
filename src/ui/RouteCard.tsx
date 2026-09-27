@@ -2,7 +2,7 @@
 import type { Route } from '../routing/index.ts';
 import { graph } from '../data/index.ts';
 import { formatDistance, formatDuration, formatSteps } from '../lib/format.ts';
-import { entranceLabel, floorChangeText, routeSegments, type Segment } from '../lib/routeSummary.ts';
+import { entranceLabel, floorChangeText, routeSegments, verticalMode, type Segment } from '../lib/routeSummary.ts';
 import { Chip, Icon } from './common.tsx';
 import { useTheme, type Theme } from './theme.ts';
 
@@ -24,6 +24,19 @@ export function FloorBar({ route }: { route: Route }) {
   );
 }
 
+/** 층 이동 방법 표시: 엘리베이터 이용 / 계단만 이용 / 엘리베이터+계단 / 같은 층 */
+export function VerticalBadge({ route }: { route: Route }) {
+  const t = useTheme();
+  const { mode, label } = verticalMode(route);
+  const color = mode === 'elevator' ? t.primary : mode === 'none' ? t.subtext : t.accent;
+  return (
+    <span className="mode-badge" style={{ color, borderColor: color }}>
+      <Icon name={mode === 'elevator' || mode === 'mixed' ? 'elevator-passenger' : mode === 'stairs' ? 'stairs' : 'walk'} size={14} color={color} />
+      {label}
+    </span>
+  );
+}
+
 /** 시간 · 걸음 · 거리 한 줄 */
 export function RouteSummaryLine({ route }: { route: Route }) {
   return (
@@ -41,13 +54,14 @@ export function RouteCard({ route, onPress }: { route: Route; onPress: () => voi
   return (
     <button
       type="button"
-      aria-label={`${route.labels.join(', ')} 경로, ${formatDuration(route.seconds)}, ${formatSteps(route.steps)}`}
+      aria-label={`${route.labels.join(', ')} 경로, ${verticalMode(route).label}, ${formatDuration(route.seconds)}, ${formatSteps(route.steps)}`}
       onClick={onPress}
       className="card"
     >
       <div className="line1" style={{ width: '100%' }}>
         <RouteSummaryLine route={route} />
         <span style={{ flex: 1 }} />
+        <VerticalBadge route={route} />
         <Icon name="chevron-right" color={t.subtext} />
       </div>
       <div className="chips">

@@ -35,6 +35,18 @@ export function floorChangeText(route: Route): string {
   return parts.length ? parts.join(' · ') : '층 이동 없음';
 }
 
+export type VerticalMode = 'elevator' | 'stairs' | 'mixed' | 'none';
+
+/** 층을 오르내리는 방법: 경로 카드에 "엘리베이터 이용" / "계단만 이용"처럼 보여 준다 */
+export function verticalMode(route: Route): { mode: VerticalMode; label: string } {
+  const ev = route.instructions.some((i) => i.type === 'elevator');
+  const st = route.instructions.some((i) => i.type === 'stair-up' || i.type === 'stair-down');
+  if (ev && st) return { mode: 'mixed', label: '엘리베이터+계단' };
+  if (ev) return { mode: 'elevator', label: '엘리베이터 이용' };
+  if (st) return { mode: 'stairs', label: '계단만 이용' };
+  return { mode: 'none', label: '같은 층' };
+}
+
 /** 경로가 지나는 층 (처음 나오는 순서) */
 export function routeFloors(route: Route): FloorCode[] {
   const out: FloorCode[] = [];

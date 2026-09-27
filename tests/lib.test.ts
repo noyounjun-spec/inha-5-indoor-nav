@@ -4,7 +4,7 @@ import { buildGraph, findRoutes, type FloorFile } from '../src/routing/index.ts'
 import { formatDistance, formatDuration, formatSteps } from '../src/lib/format.ts';
 import { resolvePlace, placeLabel, startLabel, MAX_GPS_START_M } from '../src/lib/places.ts';
 import { buildSearchIndex, search } from '../src/lib/search.ts';
-import { routeSegments, floorChangeText, routeFloors, entranceLabel, remaining } from '../src/lib/routeSummary.ts';
+import { routeSegments, floorChangeText, routeFloors, entranceLabel, remaining, verticalMode } from '../src/lib/routeSummary.ts';
 import { loadFloors } from '../scripts/load-floors.ts';
 
 // tests/fixtures/mini 는 가상 데이터다 (실제 5호관 아님)
@@ -70,6 +70,9 @@ test('입구 출발 경로와 요약 정보', () => {
     ['1F', '계단', '2F'],
   );
   assert.equal(floorChangeText(stairs), '계단 1F→2F');
+  assert.equal(verticalMode(stairs).label, '계단만 이용');
+  const noStairs = routes.find((r) => r.profiles.includes('no-stairs'))!;
+  assert.equal(verticalMode(noStairs).label, '엘리베이터 이용');
   assert.deepEqual(routeFloors(stairs), ['1F', '2F']);
   assert.equal(entranceLabel(mini, stairs), '5남관 입구 (1F)');
   assert.equal(remaining(stairs, 0).steps, stairs.instructions.reduce((s, i) => s + i.steps, 0));
