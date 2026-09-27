@@ -2,6 +2,7 @@
 // 브라우저에서는 걸음·기압 센서를 쓸 수 없어서 실내 진행은 내비 화면의 버튼으로 한다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Geo } from '../routing/index.ts';
+import { hasEntranceGeo } from '../data/index.ts';
 
 type Status = 'loading' | 'granted' | 'denied' | 'unavailable';
 
@@ -33,8 +34,11 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  // 입구 위경도가 없으면 GPS를 쓸 곳이 없으므로 위치 권한을 묻지 않는다.
+  // 지금 위치는 사용자가 근처 호실을 입력해 정한다 (docs/LOCATION.md)
   useEffect(() => {
-    refresh();
+    if (hasEntranceGeo) refresh();
+    else setStatus('unavailable');
   }, [refresh]);
 
   const value = useMemo(() => ({ status, coords, refresh }), [status, coords, refresh]);

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { Geo } from '../routing/index.ts';
-import { entrancesWithGeo, graph } from '../data/index.ts';
+import { entrancesWithGeo, graph, hasEntranceGeo } from '../data/index.ts';
 import { ENTRANCES, ME, startLabel } from '../lib/places.ts';
 import { useTrip } from '../state/trip.ts';
 import { useLocation } from '../location/LocationProvider.tsx';
@@ -50,9 +50,10 @@ export default function Home() {
         <DemoBanner />
       </div>
 
-      <FloatingButton icon="crosshairs-gps" label="현재 위치로" onPress={recenter} className="home-gps" />
+      {/* GPS 버튼과 위치 권한 안내는 입구 위경도가 있어 GPS 출발을 쓸 수 있을 때만 보인다 */}
+      {hasEntranceGeo && <FloatingButton icon="crosshairs-gps" label="현재 위치로" onPress={recenter} className="home-gps" />}
 
-      {(status === 'denied' || status === 'unavailable') && (
+      {hasEntranceGeo && (status === 'denied' || status === 'unavailable') && (
         <div className="home-notice">
           <span className="t-small" style={{ flex: 1 }}>
             {status === 'denied' ? '위치 권한이 꺼져 있어요. 근처 호실을 입력하면 거기서 출발해요.' : '현재 위치를 가져오지 못했어요.'}
