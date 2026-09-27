@@ -27,3 +27,6 @@ export const MAP_FALLBACK_CENTER: Geo = { lat: 37.4505, lng: 126.6535 };
 export function entrancesWithGeo() {
   return [...graph.nodes.values()].filter((n) => n.type === 'entrance' && n.geo);
 }
+
+/** 입구 위경도가 하나라도 있어야 GPS "내 위치" 출발을 쓸 수 있다. 없으면 출발지는 "5호관 입구"가 기본값이다 */
+export const hasEntranceGeo = entrancesWithGeo().length > 0;

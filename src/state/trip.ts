@@ -2,7 +2,8 @@
 // 최근 검색만 브라우저(localStorage)에 남긴다. 저장소를 못 쓰면 메모리에만 둔다.
 import { useSyncExternalStore } from 'react';
 import type { Geo, Route } from '../routing/index.ts';
-import { ME } from '../lib/places.ts';
+import { hasEntranceGeo } from '../data/index.ts';
+import { ENTRANCES, ME } from '../lib/places.ts';
 
 export interface TripState {
   /** 'me' | 'entrances' | 방 ID | 노드 ID */
@@ -26,7 +27,8 @@ function loadRecent(): string[] {
   }
 }
 
-let state: TripState = { from: ME, to: null, routes: [], selected: 0, startGeo: null, recent: loadRecent() };
+// 입구 위경도가 없으면 GPS 출발을 쓸 수 없으므로 "5호관 입구"에서 출발한다
+let state: TripState = { from: hasEntranceGeo ? ME : ENTRANCES, to: null, routes: [], selected: 0, startGeo: null, recent: loadRecent() };
 const listeners = new Set<() => void>();
 
 export function setTrip(patch: Partial<TripState>) {

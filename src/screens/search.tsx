@@ -1,7 +1,7 @@
 // S2 검색: 호수·관·이름·별칭으로 방 찾기 (docs/SPEC.md)
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { graph } from '../data/index.ts';
+import { graph, hasEntranceGeo } from '../data/index.ts';
 import { ENTRANCES, ME, placeLabel } from '../lib/places.ts';
 import { useBack } from '../lib/nav.ts';
 import { buildSearchIndex, search, type SearchItem } from '../lib/search.ts';
@@ -43,7 +43,8 @@ export default function Search() {
     const special: Row[] =
       field === 'from'
         ? [
-            { id: ME, icon: 'crosshairs-gps', title: '내 위치' },
+            // 입구 위경도가 없으면 GPS 출발을 쓸 수 없어 "내 위치"를 보여 주지 않는다
+            ...(hasEntranceGeo ? [{ id: ME, icon: 'crosshairs-gps' as const, title: '내 위치' }] : []),
             { id: ENTRANCES, icon: 'door-open', title: '5호관 입구', subtitle: '가장 알맞은 입구에서 출발' },
           ]
         : [];

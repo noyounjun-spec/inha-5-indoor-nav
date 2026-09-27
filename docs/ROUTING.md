@@ -9,7 +9,7 @@
 |------|----|----|------|
 | `STRIDE_M` | 0.7 | 평지 한 걸음 보폭(m) | 기본값. 나중에 보행계로 개인별 보정 |
 | `WALK_SPEED_MPS` | 1.2 | 평지 걷는 속도(m/s) | 기본값 |
-| `DEFAULT_TREADS_PER_LEVEL` | 24 | 계단 칸 수를 모를 때 한 층당 칸 수 | **현장 확인 필요** |
+| `DEFAULT_TREADS_PER_LEVEL` | 24 | 계단 칸 수를 모를 때 한 층당 칸 수 | 기본값 (현장 측정은 하지 않기로 함) |
 | `SECONDS_PER_TREAD` | 0.6 | 계단 한 칸에 걸리는 시간(s) | 기본값 |
 | `ELEVATOR_WAIT_S` | 30 | 엘리베이터 평균 대기 시간(s) | 기본값 |
 | `ELEVATOR_S_PER_LEVEL` | 4 | 엘리베이터 한 층 이동 시간(s) | 기본값 |

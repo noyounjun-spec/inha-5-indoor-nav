@@ -9,7 +9,7 @@ export const floors: FloorFile[] = [
     "level": 1,
     "image": "floorplans/1F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5E-1F-N001",
@@ -698,11 +698,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "5동관 북쪽 출입구 연결",
         "where": "x 2279~2351, y 251~323",
         "note": "출입구 칸의 서쪽·남쪽이 이름 없는 회색 칸(x 2234~2275 y 251~323 / x 2279~2351 y 327~368)과 닿고 흰 복도와는 꼭짓점만 닿는다. 회색 칸 통행 여부를 몰라 입구 노드만 만들고 잇지 않았다"
@@ -735,7 +730,7 @@ export const floors: FloorFile[] = [
     "level": 2,
     "image": "floorplans/2F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5E-2F-N001",
@@ -1464,11 +1459,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "북동쪽 모서리 계단(5E-ST-Y300) 연결과 1층 짝",
         "where": "x 2290~2365, y 251~324",
         "note": "복도와 꼭짓점만 닿고 사이에 회색 칸(x 2246~2288 y 251~324, x 2290~2362 y 327~445)이 있어 들어가는 길을 알 수 없다. 노드만 만들고 잇지 않았다. 1층의 같은 자리는 출입구이고, 1F의 5E-ST-Y400(2195, 407)과 같은 계단인지 확인 필요(순서는 첫 번째로 같으나 줄이 다르고 약 180px 떨어짐). 새 이름을 썼다. treadsToNextUp 모름"
@@ -1516,7 +1506,7 @@ export const floors: FloorFile[] = [
     "level": 3,
     "image": "floorplans/3F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5E-3F-N001",
@@ -2142,11 +2132,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "300호",
         "where": "도면 오른쪽 위 x 2278~2351, y 251~324",
         "note": "서쪽(x 2234~2275)과 남쪽(x 2278~2350, y 327~368)이 이름 없는 회색 칸이고 흰 복도와는 꼭짓점만 닿아 출입을 알 수 없음. 방을 만들지 않았다"
@@ -2189,7 +2174,7 @@ export const floors: FloorFile[] = [
     "level": 4,
     "image": "floorplans/4F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5E-4F-N001",
@@ -2738,11 +2723,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "\"사진 없음\" 빗금 영역",
         "where": "5동관 x 2158~2354, y 767~930",
         "note": "안쪽 줄·복도·바깥 줄을 모두 덮고 있어 그 안의 방·복도·계단을 알 수 없다. 5동관 복도 북쪽 구간(y 327~766)과 남쪽 구간(y 931~1435)을 잇지 않았다(두 구간은 5북·5서·5남관 복도를 돌아 이어짐). 1F 계단 5E-ST-Y800(2195,818.5)이 이 영역 안이라 4층 짝을 확인할 수 없다"
@@ -2775,7 +2755,7 @@ export const floors: FloorFile[] = [
     "level": 0,
     "image": "floorplans/B1F.png",
     "metersPerUnit": 0.045,
-    "scaleSource": "임시값: B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5E-B1-N001",
@@ -3940,11 +3920,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대·치수 없음. B1 도면은 1F와 크기·배율이 달라 복도 폭 약 60px = 2.7m로 가정해 0.045 m/px로 잡았다. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "북쪽 계단(5E-ST-B1-1)이 1F의 어느 계단과 같은지 확인 필요",
         "where": "가운데 줄 x 1131~1356, y 595~662",
         "note": "1F 북동쪽의 5E-ST-Y400(1F x 2159~2231, y 371~443) 또는 5N-ST-X2100(1F x 2082~2156, y 371~443)과 같은 계단일 수 있으나, B1 도면이 비례가 맞지 않는 안내도이고 서쪽 출구 화살표가 있어 바깥으로만 이어지는 계단일 수도 있다. 1F 계단과 같다고 확인되면 group을 그 이름으로 바꾼다. treadsToNextUp 모름"
@@ -3987,7 +3962,7 @@ export const floors: FloorFile[] = [
     "level": 1,
     "image": "floorplans/1F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5N-1F-N001",
@@ -5274,11 +5249,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "116B호 관 구분",
         "where": "5동관 동쪽 줄 맨 위 x 2279~2351, y 371~443",
         "note": "칸 색은 5북관(연파랑)이지만 위치는 5동관 줄이고 116A(5동관)와 번호가 이어진다. 도면 범례 색을 따라 5N-1F-116B로 만들었고 문은 5동관 복도에 이었다. 현장 확인 필요"
@@ -5306,7 +5276,7 @@ export const floors: FloorFile[] = [
     "level": 2,
     "image": "floorplans/2F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5N-2F-N001",
@@ -6709,11 +6679,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "계단 칸 수",
         "where": "5N-ST-X800, 5N-ST-X1500",
         "note": "treadsToNextUp 모름"
@@ -6741,7 +6706,7 @@ export const floors: FloorFile[] = [
     "level": 3,
     "image": "floorplans/3F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5N-3F-N001",
@@ -7992,11 +7957,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "349호",
         "where": "도면 왼쪽 위 x 115~187, y 251~324",
         "note": "아래는 이름 없는 회색 칸(x 116~188, y 327~443), 오른쪽은 계단(5N-ST-X200)이고 흰 복도와는 꼭짓점만 닿아 출입을 알 수 없음. 방을 만들지 않았다"
@@ -8029,7 +7989,7 @@ export const floors: FloorFile[] = [
     "level": 4,
     "image": "floorplans/4F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5N-4F-N001",
@@ -9286,11 +9246,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "431B호, 431A호",
         "where": "5북관 위쪽 줄 x 1053~1172, y 251~286 (431D·431C호 위 칸)",
         "note": "북쪽 외벽과 431D·431C호 사이에 있어 복도에 닿지 않는다. 출입 경로를 알 수 없어 방을 만들지 않았다"
@@ -9338,7 +9293,7 @@ export const floors: FloorFile[] = [
     "level": 0,
     "image": "floorplans/B1F.png",
     "metersPerUnit": 0.045,
-    "scaleSource": "임시값: B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5N-B1-N001",
@@ -9664,11 +9619,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대·치수 없음. B1 도면은 1F와 크기·배율이 달라 복도 폭 약 60px = 2.7m로 가정해 0.045 m/px로 잡았다. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "002호(.NETers)",
         "where": "북동쪽 모서리 x 1421~1650, y 285~399",
         "note": "서쪽은 003호, 남쪽은 001호(근로자 휴게실)와 닿고 복도(x 1357~1420)와는 꼭짓점만 닿는다. 드나드는 곳을 알 수 없어 방을 만들지 않았다"
@@ -9696,7 +9646,7 @@ export const floors: FloorFile[] = [
     "level": 1,
     "image": "floorplans/1F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5S-1F-N001",
@@ -11068,11 +11018,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "5남관 서쪽 구간 복도의 연결",
         "where": "5남관 복도 x 193~867 (반 층 어긋난 계단 서쪽)",
         "note": "반 층 어긋난 계단 칸(x 870~971)이 복도 띠를 가로막고 있어 동쪽 복도와 같은 높이로 이어지는지 도면으로 알 수 없음. 서쪽 구간에는 출입구 표시도 없다. 복도·문 노드는 만들었으나 입구와 이어지지 않아 방은 만들지 않았다. 연결 확인 후 방 등록 필요: 137(문 노드 5S-1F-N098), 135C(문 노드 5S-1F-N099), 135B(문 노드 5S-1F-N100), 135A(문 노드 5S-1F-N101), 133(문 노드 5S-1F-N102), 131(문 노드 5S-1F-N103), 140(문 노드 5S-1F-N104), 138(문 노드 5S-1F-N105), 136(문 노드 5S-1F-N106), 132(문 노드 5S-1F-N107), 144(문 노드 5S-1F-N108)"
@@ -11120,7 +11065,7 @@ export const floors: FloorFile[] = [
     "level": 2,
     "image": "floorplans/2F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5S-2F-N001",
@@ -12432,11 +12377,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "반 층 어긋난 계단(5S-ST-X900)의 높이와 연결",
         "where": "5남관 아래쪽 x 795~898, y 1325~1518, 도면 표기 \"반 층 어긋난 계단\"",
         "note": "계단 칸이 복도 띠를 가로막고 있고, 어느 관·층(반 층 높이)과 이어지는지 도면에 없다. level을 지정하지 않았다(파일 level 2로 처리됨). 복도와 잇지 않았다. 1층 5S-ST-X900(x 920.5)과 순서·위치(약 74px 차이)가 같아 같은 group을 썼다. treadsToNextUp 모름"
@@ -12484,7 +12424,7 @@ export const floors: FloorFile[] = [
     "level": 3,
     "image": "floorplans/3F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5S-3F-N001",
@@ -13567,11 +13507,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "반 층 어긋난 계단(5S-ST-X900)의 높이와 연결",
         "where": "5남관 아래쪽 x 844~945, y 1318~1511, 도면 표기 \"반 층 어긋난 계단\"",
         "note": "복도 띠를 가로막고 있고, 어느 관·층(반 층 높이)과 이어지는지 도면에 없음. 노드에 level을 지정하지 않았고(파일 level 3으로 처리됨) 서쪽·동쪽 복도 어느 쪽과도 잇지 않았다. treadsToNextUp 모름"
@@ -13609,7 +13544,7 @@ export const floors: FloorFile[] = [
     "level": 4,
     "image": "floorplans/4F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5S-4F-N001",
@@ -14943,11 +14878,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "반 층 어긋난 계단(5S-ST-X900)의 높이와 연결",
         "where": "5남관 위쪽 줄 x 865~973, y 1319~1391",
         "note": "4F 도면에는 \"계단\"으로만 적혀 있고 위쪽 줄에만 있어 복도를 막지 않는다. 1F 반 층 어긋난 계단(x 870~971)과 x 위치가 같아 같은 group으로 했다. 어느 관·층(반 층 높이)에 정차하는지 도면에 없어 level을 지정하지 않았다(파일 level 4). 남쪽 변이 복도에 닿아 복도와 이었으나 4층 복도 높이에서 바로 드나드는지 현장 확인 필요. treadsToNextUp 모름"
@@ -14970,7 +14900,7 @@ export const floors: FloorFile[] = [
     "level": 0,
     "image": "floorplans/B1F.png",
     "metersPerUnit": 0.045,
-    "scaleSource": "임시값: B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "B1 도면 복도 폭(약 60px: 북쪽 복도 64px, 동쪽 세로 복도 64px, 남쪽 복도 55px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5S-B1-N001",
@@ -15318,11 +15248,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대·치수 없음. B1 도면은 1F와 크기·배율이 달라 복도 폭 약 60px = 2.7m로 가정해 0.045 m/px로 잡았다. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "5남관 지하 서쪽 복도(사진 없음)",
         "where": "남쪽 복도 서쪽 끝 x 543 너머 (도면 점선 x 약 317~543, y 1941~1998)",
         "note": "도면에 '5남관 지하 복도 (사진 없음)'으로 점선만 있다. 복도 노드는 x 616.5(소강당 쪽 계단 앞)까지만 만들었다"
@@ -15375,7 +15300,7 @@ export const floors: FloorFile[] = [
     "level": 1,
     "image": "floorplans/1F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5W-1F-N001",
@@ -15425,11 +15350,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "5서관 1층 복도",
         "where": "도면 왼쪽 세로 띠 x 115~307",
         "note": "5서관 칸들이 띠 전체를 채우고 흰 복도가 그려져 있지 않다. 150·151A·151B·151C·152·156·157A·160·166·167·168호에 어떻게 들어가는지 알 수 없어 방을 만들지 않았다"
@@ -15462,7 +15382,7 @@ export const floors: FloorFile[] = [
     "level": 2,
     "image": "floorplans/2F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5W-2F-N001",
@@ -16143,11 +16063,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "북서쪽 모서리 계단(5W-ST-Y300) 연결과 관 구분",
         "where": "x 115~189, y 251~324",
         "note": "5북관 위쪽 줄 서쪽 끝이자 5서관 바깥 줄 위 끝 자리. 1층 규칙(모서리는 세로 줄 관)을 따라 5서관으로 분류. 복도와 꼭짓점만 닿고 사이에 회색 칸(x 191~309 y 251~324, x 115~189 y 327~445)이 있어 들어가는 길을 알 수 없다. 노드만 만들고 잇지 않았다. 1층 같은 자리는 149호라 1층 짝 없음. treadsToNextUp 모름"
@@ -16185,7 +16100,7 @@ export const floors: FloorFile[] = [
     "level": 3,
     "image": "floorplans/3F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5W-3F-N001",
@@ -16786,11 +16701,6 @@ export const floors: FloorFile[] = [
     ],
     "unknown": [
       {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
-      {
         "what": "남서쪽 계단(5W-ST-Y1400) 연결",
         "where": "x 193~290, y 1318~1391",
         "note": "위 변은 5서관 복도 끝(x 191~232)에, 아래 변은 5남관 복도 서쪽 구간에 닿는다. 1F와 같이 \"복도에 닿으면 잇는다\"는 기준으로 두 복도 모두와 이었다. 그래서 이 층에서는 계단실을 지나 5서관 복도와 5남관 복도 서쪽 구간이 같은 높이로 이어진 것으로 처리된다. 계단실을 같은 층에서 가로질러 갈 수 있는지 현장 확인 필요. 관 구분은 1F를 따라 5서관. treadsToNextUp 모름"
@@ -16843,7 +16753,7 @@ export const floors: FloorFile[] = [
     "level": 4,
     "image": "floorplans/4F.png",
     "metersPerUnit": 0.06,
-    "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+    "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
     "nodes": [
       {
         "id": "5W-4F-N001",
@@ -17536,11 +17446,6 @@ export const floors: FloorFile[] = [
       }
     ],
     "unknown": [
-      {
-        "what": "축척",
-        "where": "도면 전체",
-        "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-      },
       {
         "what": "북서쪽 모서리 계단(5W-ST-Y400) 관 구분",
         "where": "x 235~325, y 371~443",

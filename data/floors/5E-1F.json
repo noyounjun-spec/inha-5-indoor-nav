@@ -4,7 +4,7 @@
   "level": 1,
   "image": "floorplans/1F.png",
   "metersPerUnit": 0.06,
-  "scaleSource": "임시값: 복도 폭(도면 약 45px)을 약 2.7m로 가정. 현장 측정 필요",
+  "scaleSource": "복도 폭(도면 약 45px)을 약 2.7m로 가정 (현장 측정은 하지 않기로 함)",
   "nodes": [
     {
       "id": "5E-1F-N001",
@@ -692,11 +692,6 @@
     }
   ],
   "unknown": [
-    {
-      "what": "축척",
-      "where": "도면 전체",
-      "note": "축척 막대 없음. 복도 한 구간 실측 후 metersPerUnit 수정 필요"
-    },
     {
       "what": "5동관 북쪽 출입구 연결",
       "where": "x 2279~2351, y 251~323",
