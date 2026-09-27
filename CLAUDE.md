@@ -4,7 +4,7 @@
 UI 구성은 네이버 지도 도보 길찾기를 참고하되, 로고·아이콘·브랜드 색은 복제하지 않는다.
 
 ## 기술
-- 웹 앱: Vite + React + TypeScript. 층 지도는 SVG, 실외 지도는 Leaflet(OpenStreetMap), 화면 이동은 react-router(HashRouter)
+- 웹 앱: Vite + React + TypeScript. 층 지도는 SVG, 실외 지도는 Leaflet(OpenTopoMap 타일, 안 되면 Esri 위성. tile.openstreetmap.org는 파일로 열면 차단되어 쓰지 않음), 화면 이동은 react-router(HashRouter)
 - 실행: `실행.bat` 더블클릭 또는 `npm run dev` (브라우저가 자동으로 열림, 같은 Wi‑Fi 휴대폰은 터미널의 Network 주소로 접속)
 - 배포용 빌드: `npm run build` → `dist/index.html` 한 파일(더블클릭으로도 열리고 정적 호스팅에 그대로 올릴 수 있다) · 타입 검사: `npm run typecheck`
 - 프로젝트 폴더의 `index.html`을 직접 열면 동작하지 않는다(개발용 시작 파일)

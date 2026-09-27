@@ -1,11 +1,31 @@
-// 실외 지도 (Leaflet + OpenStreetMap). 홈 화면의 입구 표시와 실외 구간(내 위치 → 입구) 표시에 쓴다.
-import { useEffect } from 'react';
+// 실외 지도 (Leaflet + OpenTopoMap 타일, 안 되면 Esri 위성 사진으로 바꾼다). 홈 화면의 입구 표시와 실외 구간(내 위치 → 입구) 표시에 쓴다.
+import { useEffect, useState } from 'react';
 import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Geo } from '../routing/index.ts';
 import { graph, MAP_FALLBACK_CENTER } from '../data/index.ts';
 import { placeLabel } from '../lib/places.ts';
 import { useTheme } from './theme.ts';
+
+// 지도 타일 서버. tile.openstreetmap.org는 페이지 주소(Referer)가 없으면 "Access blocked" 이미지를 주고,
+// CARTO는 API 키가 필요해서 쓰지 않는다. dist/index.html을 파일로 열어도 되는 서버만 쓰고,
+// 첫 서버에서 오류가 이어지면 다음 서버로 바꾼다. (2026-09 직접 요청해 확인)
+const TILES = [
+  {
+    // OpenStreetMap 데이터 기반 지도. 건물 모양과 이름(1호관, 본관 등)이 보인다
+    url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    subdomains: 'abc',
+    maxNativeZoom: 17,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
+  },
+  {
+    // 위성 사진 (예비)
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    subdomains: '',
+    maxNativeZoom: 19,
+    attribution: 'Tiles &copy; Esri',
+  },
+];
 
 const ll = (g: Geo): [number, number] => [g.lat, g.lng];
 
@@ -43,6 +63,9 @@ interface Props {
 
 export function OutdoorMap({ me, entranceIds = [], showPath, focus }: Props) {
   const t = useTheme();
+  const [tileIdx, setTileIdx] = useState(0);
+  const [tileErrors, setTileErrors] = useState(0);
+  const tiles = TILES[tileIdx];
   const entrances = entranceIds
     .map((id) => ({ id, geo: graph.nodes.get(id)?.geo }))
     .filter((e): e is { id: string; geo: Geo } => !!e.geo);
@@ -51,7 +74,24 @@ export function OutdoorMap({ me, entranceIds = [], showPath, focus }: Props) {
 
   return (
     <MapContainer center={ll(center)} zoom={17} zoomControl={false} attributionControl className="fill" style={{ background: t.bg }}>
-      <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" maxZoom={19} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
+      <TileLayer
+        key={tiles.url}
+        url={tiles.url}
+        subdomains={tiles.subdomains}
+        maxNativeZoom={tiles.maxNativeZoom}
+        maxZoom={19}
+        attribution={tiles.attribution}
+        eventHandlers={{
+          // 타일이 여러 장 연달아 안 오면 다음 서버로 바꾼다
+          tileerror: () => {
+            if (tileIdx >= TILES.length - 1) return;
+            if (tileErrors + 1 >= 4) {
+              setTileIdx(tileIdx + 1);
+              setTileErrors(0);
+            } else setTileErrors(tileErrors + 1);
+          },
+        }}
+      />
       <FitView points={points} focus={focus} />
       {showPath && me && entrances[0] && (
         <Polyline positions={[ll(me), ll(entrances[0].geo)]} pathOptions={{ color: t.primary, weight: 6, dashArray: '2 10', lineCap: 'round' }} />
