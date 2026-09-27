@@ -33,7 +33,7 @@ export default function RouteDetail() {
         {shown === 'outdoor' ? (
           <OutdoorMap me={startGeo} entranceIds={outdoorIns ? [outdoorIns.nodeIds[0]] : []} showPath />
         ) : (
-          <FloorPlan floor={shown} route={route} />
+          <FloorPlan floor={shown} route={route} inset={{ top: 64, bottom: window.innerHeight * 0.48 }} />
         )}
       </div>
 

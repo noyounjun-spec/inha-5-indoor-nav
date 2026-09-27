@@ -124,5 +124,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--primary); o
 .arrive .badge { width: 96px; height: 96px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; }
 
 /* 평면도 */
-.floor-plan { position: absolute; inset: 0; background: var(--floor-bg); }
+.floor-plan { position: absolute; inset: 0; background: var(--floor-bg); overflow: hidden; touch-action: none; cursor: grab; }
+.floor-plan:active { cursor: grabbing; }
+.plan-recenter { position: absolute; left: 16px; z-index: 550; }
 .floor-plan svg { display: block; width: 100%; height: 100%; }

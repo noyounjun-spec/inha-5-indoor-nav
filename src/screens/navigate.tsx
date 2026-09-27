@@ -60,7 +60,7 @@ export default function Navigate() {
         {shown === 'outdoor' ? (
           <OutdoorMap me={startGeo} entranceIds={outdoorIns ? [outdoorIns.nodeIds[0]] : []} showPath />
         ) : (
-          <FloorPlan floor={shown} route={route} activeStep={step} meNodeId={ins.nodeIds[0]} />
+          <FloorPlan floor={shown} route={route} activeStep={step} meNodeId={ins.nodeIds[0]} inset={{ top: 120, bottom: 190 }} />
         )}
       </div>
 

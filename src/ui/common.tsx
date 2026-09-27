@@ -68,6 +68,7 @@ export function IconButton({
   onPress,
   label,
   className = '',
+  style,
   color,
   disabled,
 }: {
@@ -75,20 +76,21 @@ export function IconButton({
   onPress: () => void;
   label: string;
   className?: string;
+  style?: CSSProperties;
   color?: string;
   disabled?: boolean;
 }) {
   const t = useTheme();
   return (
-    <button type="button" aria-label={label} title={label} onClick={onPress} disabled={disabled} className={`icon-btn ${className}`}>
+    <button type="button" aria-label={label} title={label} onClick={onPress} disabled={disabled} className={`icon-btn ${className}`} style={style}>
       <Icon name={icon} color={color ?? t.text} />
     </button>
   );
 }
 
 /** 떠 있는 둥근 버튼 (지도 위 내 위치 버튼 등) */
-export function FloatingButton({ icon, onPress, label, className = '' }: { icon: IconName; onPress: () => void; label: string; className?: string }) {
-  return <IconButton icon={icon} onPress={onPress} label={label} className={`floating ${className}`} />;
+export function FloatingButton({ icon, onPress, label, className = '', style }: { icon: IconName; onPress: () => void; label: string; className?: string; style?: CSSProperties }) {
+  return <IconButton icon={icon} onPress={onPress} label={label} className={`floating ${className}`} style={style} />;
 }
 
 export function PrimaryButton({ title, icon, onPress, style }: { title: string; icon?: IconName; onPress: () => void; style?: CSSProperties }) {

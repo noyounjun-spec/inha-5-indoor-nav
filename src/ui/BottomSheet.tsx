@@ -20,6 +20,7 @@ export function BottomSheet({ snaps = [0.22, 0.48, 0.88], initial = 1, header, c
   useEffect(() => {
     const parent = ref.current?.parentElement;
     if (!parent) return;
+    setHeight(parent.clientHeight);
     const ro = new ResizeObserver(() => setHeight(parent.clientHeight));
     ro.observe(parent);
     return () => ro.disconnect();

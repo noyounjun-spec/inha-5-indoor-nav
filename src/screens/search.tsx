@@ -30,8 +30,16 @@ export default function Search() {
   const { recent } = useTrip();
   const [q, setQ] = useState('');
 
+  const hits = useMemo(() => (q.trim() ? search(index, q) : []), [q]);
+  // 같은 호수가 여러 관에 있으면 관을 골라 달라고 한다 (docs/SPEC.md 검색)
+  const sameNumber = useMemo(() => {
+    const num = q.trim().toLowerCase().replace(/호$/, '');
+    const exact = hits.filter((i) => i.number?.toLowerCase() === num);
+    return new Set(exact.map((i) => i.building)).size > 1 ? num.toUpperCase() : null;
+  }, [q, hits]);
+
   const rows: Row[] = useMemo(() => {
-    if (q.trim()) return search(index, q).map(toRow);
+    if (q.trim()) return hits.map(toRow);
     const special: Row[] =
       field === 'from'
         ? [
@@ -44,7 +52,7 @@ export default function Search() {
       .filter((i): i is SearchItem => !!i)
       .map((i) => ({ ...toRow(i), icon: 'history' as const }));
     return [...special, ...recents];
-  }, [q, field, recent]);
+  }, [q, hits, field, recent]);
 
   const choose = (id: string) => {
     if (id !== ME && id !== ENTRANCES) addRecent(id);
@@ -60,7 +68,8 @@ export default function Search() {
         role="search"
         onSubmit={(e) => {
           e.preventDefault();
-          if (q.trim() && rows[0]) choose(rows[0].id);
+          // 여러 관에 같은 호수가 있으면 첫 결과를 고르지 않고 사용자가 고르게 한다
+          if (q.trim() && rows[0] && !sameNumber) choose(rows[0].id);
         }}
       >
         <IconButton icon="chevron-left" label="뒤로" onPress={back} />
@@ -79,6 +88,7 @@ export default function Search() {
       <DemoBanner style={{ margin: '12px 12px 0' }} />
 
       <div className="list">
+        {sameNumber && <div className="section">{sameNumber}호가 여러 관에 있어요. 관을 골라 주세요</div>}
         {!q.trim() && rows.some((r) => r.icon === 'history') && <div className="section">최근 검색</div>}
         {rows.length === 0 && (
           <div className="empty">{q.trim() ? '검색 결과가 없어요' : '호수(234), 관+호수(5남 234), 방 이름으로 찾을 수 있어요'}</div>
