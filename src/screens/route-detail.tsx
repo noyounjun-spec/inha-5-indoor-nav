@@ -20,6 +20,8 @@ export default function RouteDetail() {
   const { routes, selected, startGeo } = useTrip();
   const route = routes[selected];
   const [view, setView] = useState<View | null>(null);
+  /** 단계별 안내에서 누른 단계. 도면을 그 구간에 맞춘다 */
+  const [focus, setFocus] = useState<number | null>(null);
 
   if (!route) return <Navigate to="/" replace />;
   const hasOutdoor = route.instructions.some((i) => i.type === 'outdoor');
@@ -33,7 +35,12 @@ export default function RouteDetail() {
         {shown === 'outdoor' ? (
           <OutdoorMap me={startGeo} entranceIds={outdoorIns ? [outdoorIns.nodeIds[0]] : []} showPath />
         ) : (
-          <FloorPlan floor={shown} route={route} inset={{ top: 64, bottom: window.innerHeight * 0.48 }} />
+          <FloorPlan
+            floor={shown}
+            route={route}
+            focusNodeIds={focus !== null ? route.instructions[focus]?.nodeIds : undefined}
+            inset={{ top: 64, bottom: window.innerHeight * 0.48 }}
+          />
         )}
       </div>
 
@@ -41,7 +48,7 @@ export default function RouteDetail() {
         <FloatingButton icon="chevron-left" label="뒤로" onPress={back} />
         <div className="tabs" role="tablist">
           {tabs.map((v) => (
-            <button key={v} type="button" role="tab" aria-selected={v === shown} onClick={() => setView(v)} className={`tab${v === shown ? ' on' : ''}`}>
+            <button key={v} type="button" role="tab" aria-selected={v === shown} onClick={() => (setView(v), setFocus(null))} className={`tab${v === shown ? ' on' : ''}`}>
               {v === 'outdoor' ? '실외' : v}
             </button>
           ))}
@@ -71,7 +78,14 @@ export default function RouteDetail() {
           return (
             <Fragment key={i}>
               {newFloor && <FloorDivider label={ins.floor} />}
-              <InstructionRow ins={ins} onPress={() => setView(ins.type === 'outdoor' ? 'outdoor' : ins.floor)} />
+              <InstructionRow
+                ins={ins}
+                active={i === focus}
+                onPress={() => {
+                  setView(ins.type === 'outdoor' ? 'outdoor' : ins.floor);
+                  setFocus(i);
+                }}
+              />
             </Fragment>
           );
         })}

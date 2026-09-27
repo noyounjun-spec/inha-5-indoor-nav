@@ -33,6 +33,11 @@ export function resolvePlace(g: Graph, value: string, coords: Geo | null): Resol
   return { place: { kind: 'node', id: value } };
 }
 
+/** 출발지 이름. 방에서 출발하면 "근처"를 붙인다 (사용자가 근처 호실로 지금 위치를 알려 준 것이므로) */
+export function startLabel(g: Graph, value: string): string {
+  return g.rooms.has(value) ? `${placeLabel(g, value)} 근처` : placeLabel(g, value);
+}
+
 export function placeLabel(g: Graph, value: string): string {
   if (value === ME) return '내 위치';
   if (value === ENTRANCES) return '5호관 입구';

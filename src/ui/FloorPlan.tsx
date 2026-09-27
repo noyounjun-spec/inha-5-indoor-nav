@@ -1,9 +1,9 @@
 // 층 평면도 2D (SVG). 도면 이미지가 있으면 바탕에 깔고, 없으면 복도 그래프를 선으로 그린다.
 // 한 손가락(마우스) 끌기로 이동, 두 손가락 벌리기·휠로 확대한다 (docs/UI_GUIDE.md "평면도 그리기").
-// 안내 중에는 내 위치를 따라가고, 사용자가 화면을 움직이면 "현재 위치로" 버튼을 보여 준다.
+// 안내 중에는 지금 단계 구간과 내 위치를 보여 주고, 사용자가 화면을 움직이면 "현재 위치로" 버튼을 보여 준다.
 import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from 'react';
 import type { FloorCode, Route } from '../routing/index.ts';
-import { floorFiles, graph, planImageFor } from '../data/index.ts';
+import { availableFloors, floorFiles, graph, planImageFor } from '../data/index.ts';
 import { FloatingButton } from './common.tsx';
 import { useTheme } from './theme.ts';
 
@@ -12,8 +12,10 @@ interface Props {
   route?: Route;
   /** 내비 중 현재 단계 (이전 단계 경로는 흐리게) */
   activeStep?: number;
-  /** 내 위치로 표시할 노드. 있으면 화면이 이 점을 따라간다 */
+  /** 내 위치로 표시할 노드. 있으면 화면 가운데에 둔다 */
   meNodeId?: string;
+  /** 처음 화면에 맞춰 보여 줄 노드들 (내비의 지금 단계, 상세에서 누른 단계) */
+  focusNodeIds?: string[];
   /** 위·아래를 가리는 패널 높이(px). 처음 화면을 맞출 때 이만큼 비워 둔다 */
   inset?: { top: number; bottom: number };
 }
@@ -25,7 +27,7 @@ type View = { cx: number; cy: number; s: number };
 const isWalk = (type: string) => type === 'straight' || type === 'left' || type === 'right';
 const MAX_ZOOM_IN = 10;
 
-export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0, bottom: 0 } }: Props) {
+export function FloorPlan({ floor, route, activeStep, meNodeId, focusNodeIds, inset = { top: 0, bottom: 0 } }: Props) {
   const t = useTheme();
   const ref = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -67,48 +69,49 @@ export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0
 
   // ── 화면 맞추기 ──
   const visH = Math.max(1, size.h - inset.top - inset.bottom);
+  // 가장 멀리 본 배율 = 도면 전체가 보이는 영역(위·아래 패널 제외)에 들어가는 배율
   const fullS = size.w ? Math.max(full.w / size.w, full.h / visH) : 1;
-  const fit = (b: Box): View => {
-    const s = Math.min(fullS, Math.max(fullS / MAX_ZOOM_IN, b.w / size.w, b.h / visH));
-    // 가려지는 위·아래 패널만큼 가운데를 옮긴다
-    return { cx: b.x + b.w / 2, cy: b.y + b.h / 2 + ((inset.bottom - inset.top) / 2) * s, s };
+  const minS = fullS / MAX_ZOOM_IN;
+
+  /** 화면이 도면 밖으로 나가지 않게 한다. 위·아래 패널에 가리는 만큼은 더 움직일 수 있다 */
+  const clamp = (v: View): View => {
+    const s = Math.min(fullS, Math.max(minS, v.s));
+    const halfW = (size.w / 2) * s;
+    const halfH = (size.h / 2) * s;
+    const fitAxis = (c: number, lo: number, hi: number, half: number) => (hi - lo <= half * 2 ? (lo + hi) / 2 : Math.min(hi - half, Math.max(lo + half, c)));
+    return {
+      s,
+      cx: fitAxis(v.cx, full.x, full.x + full.w, halfW),
+      cy: fitAxis(v.cy, full.y - inset.top * s, full.y + full.h + inset.bottom * s, halfH),
+    };
   };
+  /** 상자가 보이는 영역(위·아래 패널 제외) 가운데에 들어오도록 맞춘다 */
+  const fit = (b: Box): View => {
+    const s = Math.max(b.w / size.w, b.h / visH);
+    return clamp({ cx: b.x + b.w / 2, cy: b.y + b.h / 2 + ((inset.bottom - inset.top) / 2) * s, s });
+  };
+  const focusOnFloor = (focusNodeIds ?? []).filter(onFloor).map((id) => graph.nodes.get(id)!);
   const initialView = (): View => {
+    // 1) 지금 단계(또는 누른 단계) 구간  2) 이 층의 경로 전체  3) 도면 전체
+    const target = focusOnFloor.length ? focusOnFloor : routeOnFloor;
+    if (!target.length) return fit(full);
+    // 너무 좁은 구간은 도면의 1/4 폭 정도는 보이게 해서 주변 호실을 알아볼 수 있게 한다
+    const v = fit(growTo(padBox(bbox(target), 0.2), full.w / 4, full.h / 4));
     if (meNodeId && onFloor(meNodeId)) {
       const n = graph.nodes.get(meNodeId)!;
-      const v = fit(routeOnFloor.length ? padBox(bbox(routeOnFloor), 0.15) : full);
-      return { ...v, ...centerOn(n, v.s) };
+      return clamp({ ...v, cx: n.x, cy: n.y + ((inset.bottom - inset.top) / 2) * v.s });
     }
-    if (routeOnFloor.length) {
-      const b = padBox(bbox(routeOnFloor), 0.25);
-      // 너무 좁은 구간은 도면의 1/4 폭 정도는 보이게 한다
-      return fit(growTo(b, full.w / 4, full.h / 4));
-    }
-    return fit(full);
+    return v;
   };
-  const centerOn = (n: { x: number; y: number }, s: number) => ({ cx: n.x, cy: n.y + ((inset.bottom - inset.top) / 2) * s });
 
-  const [view, setView] = useState<View | null>(null);
-  const [moved, setMoved] = useState(false);
-  const routeKey = route?.nodeIds.join('>') ?? '';
-
-  // 층·경로·화면 크기가 바뀌면 다시 맞춘다
-  useEffect(() => {
-    if (!size.w) return;
-    setView(initialView());
-    setMoved(false);
-  }, [floor, routeKey, size.w, size.h]);
-
-  // 내 위치가 바뀌면 따라간다 (사용자가 화면을 움직였으면 멈춘다)
-  useEffect(() => {
-    if (!meNodeId || moved || !view || !onFloor(meNodeId)) return;
-    setView((v) => (v ? { ...v, ...centerOn(graph.nodes.get(meNodeId)!, v.s) } : v));
-  }, [meNodeId]);
-
-  const clamp = (v: View): View => {
-    const s = Math.min(fullS * 1.5, Math.max(fullS / MAX_ZOOM_IN, v.s));
-    return { s, cx: Math.min(full.x + full.w, Math.max(full.x, v.cx)), cy: Math.min(full.y + full.h, Math.max(full.y, v.cy)) };
-  };
+  // 층·경로·지금 단계·화면 크기가 바뀌면 새로 맞춘다.
+  // 키가 바뀐 첫 그림부터 새 화면으로 그려서, 다른 층 자리가 잠깐 보이는 일이 없게 한다.
+  const viewKey = [floor, route?.nodeIds.join('>') ?? '', (focusNodeIds ?? []).join('>'), meNodeId ?? '', size.w, size.h].join('|');
+  const [state, setState] = useState<{ key: string; view: View; moved: boolean } | null>(null);
+  const current = state && state.key === viewKey ? state : size.w ? { key: viewKey, view: initialView(), moved: false } : null;
+  const view = current?.view ?? null;
+  const moved = current?.moved ?? false;
+  const setView = (v: View, userMoved = true) => setState({ key: viewKey, view: v, moved: moved || userMoved });
 
   // ── 손가락·마우스 조작 ──
   const pointers = useRef(new Map<number, { x: number; y: number }>());
@@ -142,8 +145,7 @@ export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0
     const ax = g.view.cx + (g.mid.x - size.w / 2) * g.view.s;
     const ay = g.view.cy + (g.mid.y - size.h / 2) * g.view.s;
     const next = clamp({ s, cx: ax - (mid.x - size.w / 2) * s, cy: ay - (mid.y - size.h / 2) * s });
-    if (Math.abs(mid.x - g.mid.x) + Math.abs(mid.y - g.mid.y) > 3 || s !== g.view.s) setMoved(true);
-    setView(next);
+    setView(next, Math.abs(mid.x - g.mid.x) + Math.abs(mid.y - g.mid.y) > 3 || s !== g.view.s);
   };
   const onUp = (e: PointerEvent) => {
     pointers.current.delete(e.pointerId);
@@ -156,12 +158,8 @@ export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0
     const ax = view.cx + (p.x - size.w / 2) * view.s;
     const ay = view.cy + (p.y - size.h / 2) * view.s;
     setView(clamp({ s, cx: ax - (p.x - size.w / 2) * s, cy: ay - (p.y - size.h / 2) * s }));
-    setMoved(true);
   };
-  const recenter = () => {
-    setView(initialView());
-    setMoved(false);
-  };
+  const recenter = () => setState({ key: viewKey, view: initialView(), moved: false });
 
   const v = view ?? { cx: full.x + full.w / 2, cy: full.y + full.h / 2, s: fullS };
   const vb: Box = { x: v.cx - (size.w / 2) * v.s, y: v.cy - (size.h / 2) * v.s, w: Math.max(1, size.w * v.s), h: Math.max(1, size.h * v.s) };
@@ -180,6 +178,7 @@ export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0
     <div
       ref={ref}
       className="floor-plan"
+      style={plan ? { background: t.planPaper } : undefined}
       role="img"
       aria-label={`${floor} 평면도`}
       onPointerDown={onDown}
@@ -270,6 +269,17 @@ export function FloorPlan({ floor, route, activeStep, meNodeId, inset = { top: 0
       )}
     </div>
   );
+}
+
+/** 도면 이미지를 미리 읽어 둔다. 층을 바꿀 때 이미지가 늦게 뜨는 것을 막는다 */
+export function preloadPlanImages() {
+  for (const floor of availableFloors) {
+    const plan = planImageFor(floor);
+    if (!plan) continue;
+    const img = new Image();
+    img.src = plan.source;
+    img.decode?.().catch(() => {});
+  }
 }
 
 function bbox(ns: { x: number; y: number }[]): Box {

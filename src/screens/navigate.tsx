@@ -60,7 +60,15 @@ export default function Navigate() {
         {shown === 'outdoor' ? (
           <OutdoorMap me={startGeo} entranceIds={outdoorIns ? [outdoorIns.nodeIds[0]] : []} showPath />
         ) : (
-          <FloorPlan floor={shown} route={route} activeStep={step} meNodeId={ins.nodeIds[0]} inset={{ top: 120, bottom: 190 }} />
+          <FloorPlan
+            floor={shown}
+            route={route}
+            activeStep={step}
+            // 지금 단계의 층을 볼 때만 내 위치와 지금 구간에 맞춘다 (다른 층을 볼 때는 그 층의 경로 전체)
+            meNodeId={shown === stepView ? ins.nodeIds[0] : undefined}
+            focusNodeIds={shown === stepView ? ins.nodeIds : undefined}
+            inset={{ top: 120, bottom: 190 }}
+          />
         )}
       </div>
 
@@ -70,6 +78,8 @@ export default function Navigate() {
           <div className="text">{ins.text}</div>
           {next && <div className="next">다음: {next.text}</div>}
         </div>
+        {/* 길을 잃었으면 근처 호실을 다시 입력해 그 자리에서 다시 찾는다 */}
+        <IconButton icon="map-marker" label="근처 호실로 위치 다시 입력" color={t.onPrimary} onPress={() => navigate('/search?field=from')} />
         <IconButton icon="close" label="안내 종료" color={t.onPrimary} onPress={back} />
       </div>
 

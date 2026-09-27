@@ -5,7 +5,7 @@ import { findRoutes, type Route } from '../routing/index.ts';
 import { graph } from '../data/index.ts';
 import { useLocation } from '../location/LocationProvider.tsx';
 import { useBack } from '../lib/nav.ts';
-import { ENTRANCES, ME, placeLabel, resolvePlace } from '../lib/places.ts';
+import { ENTRANCES, ME, placeLabel, resolvePlace, startLabel } from '../lib/places.ts';
 import { setTrip, useTrip } from '../state/trip.ts';
 import { DemoBanner, Notice } from '../ui/common.tsx';
 import { PlaceFields } from '../ui/PlaceFields.tsx';
@@ -39,7 +39,7 @@ export default function RouteList() {
   return (
     <div className="screen" style={{ background: 'var(--bg)' }}>
       <PlaceFields
-        fromLabel={placeLabel(graph, from)}
+        fromLabel={startLabel(graph, from)}
         toLabel={placeLabel(graph, to)}
         onPressFrom={() => navigate('/search?field=from&back=1')}
         onPressTo={() => navigate('/search?field=to&back=1')}

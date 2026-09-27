@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { Geo } from '../routing/index.ts';
-import { entrancesWithGeo } from '../data/index.ts';
+import { entrancesWithGeo, graph } from '../data/index.ts';
+import { ENTRANCES, ME, startLabel } from '../lib/places.ts';
+import { useTrip } from '../state/trip.ts';
 import { useLocation } from '../location/LocationProvider.tsx';
 import { DemoBanner, FloatingButton, Icon, SecondaryButton } from '../ui/common.tsx';
 import { OutdoorMap } from '../ui/OutdoorMap.tsx';
@@ -12,6 +14,8 @@ export default function Home() {
   const t = useTheme();
   const navigate = useNavigate();
   const { coords, status, refresh } = useLocation();
+  const { from } = useTrip();
+  const fromKnown = from !== ENTRANCES && from !== ME;
   const [focus, setFocus] = useState<Geo | null>(null);
   const entrances = entrancesWithGeo().map((n) => n.id);
 
@@ -29,6 +33,20 @@ export default function Home() {
           <Icon name="magnify" color={t.primary} />
           <span className="t-body">5호관 강의실·연구실 검색</span>
         </button>
+        {/* 지금 위치: GPS가 실내에서 부정확하므로 근처 호실로 알려 받는다 */}
+        <button type="button" onClick={() => navigate('/search?field=from')} className="here-box">
+          <Icon name="map-marker" color={fromKnown ? t.start : t.subtext} size={20} />
+          <span className="t-small" style={{ flex: 1, minWidth: 0 }}>
+            {fromKnown ? (
+              <>
+                지금 위치 <b className="ellipsis">{startLabel(graph, from)}</b>
+              </>
+            ) : (
+              '지금 어디에 있나요? 근처 호실을 입력하세요'
+            )}
+          </span>
+          <span className="t-small" style={{ color: t.primary, fontWeight: 700 }}>{fromKnown ? '바꾸기' : '입력'}</span>
+        </button>
         <DemoBanner />
       </div>
 
@@ -37,7 +55,7 @@ export default function Home() {
       {(status === 'denied' || status === 'unavailable') && (
         <div className="home-notice">
           <span className="t-small" style={{ flex: 1 }}>
-            {status === 'denied' ? '위치 권한이 꺼져 있어요. 입구에서 출발하는 경로로 안내합니다.' : '현재 위치를 가져오지 못했어요.'}
+            {status === 'denied' ? '위치 권한이 꺼져 있어요. 근처 호실을 입력하면 거기서 출발해요.' : '현재 위치를 가져오지 못했어요.'}
           </span>
           <SecondaryButton title="다시 시도" onPress={refresh} style={{ minHeight: 40 }} />
         </div>

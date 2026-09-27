@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildGraph, findRoutes, type FloorFile } from '../src/routing/index.ts';
 import { formatDistance, formatDuration, formatSteps } from '../src/lib/format.ts';
-import { resolvePlace, placeLabel, MAX_GPS_START_M } from '../src/lib/places.ts';
+import { resolvePlace, placeLabel, startLabel, MAX_GPS_START_M } from '../src/lib/places.ts';
 import { buildSearchIndex, search } from '../src/lib/search.ts';
 import { routeSegments, floorChangeText, routeFloors, entranceLabel, remaining } from '../src/lib/routeSummary.ts';
 import { loadFloors } from '../scripts/load-floors.ts';
@@ -76,4 +76,10 @@ test('입구 출발 경로와 요약 정보', () => {
 
   const gps = findRoutes(mini, { kind: 'geo', geo: { lat: 37.4501, lng: 126.6571 } }, { kind: 'room', id: '5S-2F-202' })[0];
   assert.equal(routeSegments(gps)[0].label, '실외');
+});
+
+test('근처 호실로 출발지를 정하면 그 방 문에서 출발하고 "근처"로 표시한다', () => {
+  assert.equal(startLabel(multi, '5N-1F-137'), '5북관 137호 근처');
+  assert.equal(startLabel(multi, 'entrances'), '5호관 입구');
+  assert.deepEqual(resolvePlace(multi, '5N-1F-137', null).place, { kind: 'room', id: '5N-1F-137' });
 });

@@ -27,7 +27,7 @@ export default function Search() {
   const [params] = useSearchParams();
   const field = params.get('field') === 'from' ? 'from' : 'to';
   const returnBack = params.has('back');
-  const { recent } = useTrip();
+  const { recent, to } = useTrip();
   const [q, setQ] = useState('');
 
   const hits = useMemo(() => (q.trim() ? search(index, q) : []), [q]);
@@ -45,7 +45,7 @@ export default function Search() {
         ? [
             // 입구 위경도가 없으면 GPS 출발을 쓸 수 없어 "내 위치"를 보여 주지 않는다
             ...(hasEntranceGeo ? [{ id: ME, icon: 'crosshairs-gps' as const, title: '내 위치' }] : []),
-            { id: ENTRANCES, icon: 'door-open', title: '5호관 입구', subtitle: '가장 알맞은 입구에서 출발' },
+            { id: ENTRANCES, icon: 'door-open', title: '5호관 입구', subtitle: '건물 밖에 있으면 가장 알맞은 입구에서 출발' },
           ]
         : [];
     const recents = recent
@@ -59,6 +59,8 @@ export default function Search() {
     if (id !== ME && id !== ENTRANCES) addRecent(id);
     setTrip(field === 'from' ? { from: id } : { to: id });
     if (returnBack) back();
+    // 출발지만 정했고 도착지가 아직 없으면 도착지 검색으로 이어 간다
+    else if (field === 'from' && !to) navigate('/search?field=to', { replace: true });
     else navigate('/routes', { replace: true });
   };
 
@@ -80,7 +82,7 @@ export default function Search() {
           enterKeyHint="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={field === 'from' ? '출발지 검색' : '도착지 검색 (예: 234, 5남 234, 학과사무실)'}
+          placeholder={field === 'from' ? '근처에 보이는 호실 (예: 123, 5북 448)' : '도착지 검색 (예: 234, 5남 234, 학과사무실)'}
           aria-label={field === 'from' ? '출발지 검색' : '도착지 검색'}
           className="search-input"
         />
@@ -89,6 +91,12 @@ export default function Search() {
       <DemoBanner style={{ margin: '12px 12px 0' }} />
 
       <div className="list">
+        {field === 'from' && !q.trim() && (
+          <div className="banner-note notice" style={{ margin: '12px 12px 0' }}>
+            <Icon name="map-marker" size={16} />
+            <span>지금 있는 곳 근처에 보이는 호실 번호를 입력하면, 그 방 앞에서 출발하는 길을 찾아 드려요.</span>
+          </div>
+        )}
         {sameNumber && <div className="section">{sameNumber}호가 여러 관에 있어요. 관을 골라 주세요</div>}
         {!q.trim() && rows.some((r) => r.icon === 'history') && <div className="section">최근 검색</div>}
         {rows.length === 0 && (

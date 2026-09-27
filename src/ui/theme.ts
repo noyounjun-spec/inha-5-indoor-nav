@@ -14,6 +14,8 @@ const light = {
   surface: '#FFFFFF',
   bg: '#F4F5F7',
   floorBg: '#F4F5F7',
+  /** 도면 이미지 바탕색. 다크 모드에서도 도면 이미지와 이어지도록 같은 값을 쓴다 */
+  planPaper: '#EEF1EF',
   wall: '#C9CDD4',
   border: '#E3E5E8',
   outdoor: '#9CA3AF',

@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router';
 import { LocationProvider } from './location/LocationProvider.tsx';
 import { applyThemeVars } from './ui/theme.ts';
+import { preloadPlanImages } from './ui/FloorPlan.tsx';
 import Home from './screens/home.tsx';
 import Search from './screens/search.tsx';
 import RouteList from './screens/routes.tsx';
@@ -14,6 +15,7 @@ import Arrive from './screens/arrive.tsx';
 import './ui/styles.css';
 
 applyThemeVars();
+preloadPlanImages();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
