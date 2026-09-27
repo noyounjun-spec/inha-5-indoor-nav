@@ -8,6 +8,8 @@ UI 구성은 네이버 지도 도보 길찾기를 참고하되, 로고·아이�
 - 실행: `실행.bat` 더블클릭 또는 `npm run dev` (브라우저가 자동으로 열림, 같은 Wi‑Fi 휴대폰은 터미널의 Network 주소로 접속)
 - 배포용 빌드: `npm run build` → `dist/index.html` 한 파일(더블클릭으로도 열리고 정적 호스팅에 그대로 올릴 수 있다) · 타입 검사: `npm run typecheck`
 - 프로젝트 폴더의 `index.html`을 직접 열면 동작하지 않는다(개발용 시작 파일)
+- GitHub: https://github.com/noyounjun-spec/inha-5-indoor-nav (공개, main 브랜치) · 웹 배포 `npm run deploy` → gh-pages 브랜치 → https://noyounjun-spec.github.io/inha-5-indoor-nav/
+  - gh CLI는 `%LOCALAPPDATA%Programsghingh.exe`(휴대용). 로그인 토큰에 workflow 권한이 없어 GitHub Actions 파일(.github/workflows)은 올릴 수 없다
 - 휴대폰에서 GPS를 쓰려면 HTTPS 주소여야 한다(localhost는 예외)
 - 테스트: `npm test` / 그래프 검사: `node scripts/validate-graph.mjs`
 - 층 데이터를 바꾸면 `npm run data`로 `src/data/generated.ts`를 다시 만든다 (`npm run dev`·`npm run build`가 자동 실행). 데이터가 없으면 앱은 데모 모드
